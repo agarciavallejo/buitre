@@ -7,6 +7,7 @@ class User(Entity, Base):
     
     name = Column(String)
     email = Column(String)
+    password = Column(String)
     latitude = Column(Numeric(9, 6))
     longitude = Column(Numeric(9, 6))
     radius = Column(Integer)
@@ -21,6 +22,7 @@ class UserSchema(Schema):
     id = fields.Integer()
     name = fields.Str()
     email = fields.Str()
+    password = fields.Str()
     latitude = fields.Decimal()
     longitude = fields.Decimal()
     radius = fields.Integer()

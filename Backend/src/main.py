@@ -1,10 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import Config
 from .entities.user import User, UserSchema
+from .entities.oportunity import Oportunity, OportunitySchema
 from .entities.entity import Base
+from controller import Controller
 
 #create app
 app = Flask(__name__)
@@ -21,7 +23,7 @@ session = Session()
 #create test user
 initial_users = session.query(User).all()
 if len(initial_users) == 0:
-    test_user = User("test", "script")
+    test_user = User("test2", "script")
     test_user.is_valid = True;
     session.add(test_user)
     session.commit()
@@ -35,4 +37,29 @@ def get_users():
     users = user_schema.dump(users_object)
     session.close()
     return jsonify(users)
-    
+
+@app.route("/oportunity")
+def list_oportunities():
+    db_opos = session.query(Oportunity).all()
+    o_sch = OportunitySchema(many = True)
+    oportunities = o_sch.dump(db_opos)
+    session.close()
+    return jsonify(oportunities)
+
+
+# route params test
+@app.route("/oportunity/create/<user_id>")
+def create_opo(user_id):
+    c = Controller(session)
+    user = c.getUser(user_id)
+    if(user):
+        c.createOportunity("Oportunitat2",user_id)
+        return "DONE"
+    else:
+        return "USER NOT FOUND"
+
+# query string params test
+@app.route("/oportunity/find")
+def create_oportunity():
+    q = request.args
+    return jsonify(q)
