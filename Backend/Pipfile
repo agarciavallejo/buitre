@@ -11,6 +11,7 @@ psycopg2-binary = "*"
 flask = "*"
 flask-cors = "*"
 marshmallow = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
