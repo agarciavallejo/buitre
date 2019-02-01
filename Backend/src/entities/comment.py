@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
+from sqlalchemy import Column, String, Integer, ForeignKey, Numeric
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
@@ -8,7 +8,7 @@ class Comment(Entity, Base):
     text            = Column("text", String)
     description     = Column("description", String)
     score           = Column("score", Numeric)
-    oportunity_id 	= Column("oportunity_id", Integer, ForeignKey('Oportunity.id'), nullable=False)
+    oportunity_id   = Column("oportunity_id", Integer, ForeignKey('Oportunity.id'), nullable=False)
     user_id         = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
 
     def __init__(self, text, user_id, oportunity_id, text):
@@ -24,6 +24,3 @@ class CommentSchema(Schema):
     score = fields.Decimal()
     oportunity_id = fields.Integer()
     user_id = fields.Integer()
-
-
-        

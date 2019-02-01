@@ -33,6 +33,3 @@ class OportunitySchema(Schema):
     score = fields.Decimal()
     closing_date = fields.Date()
     user_id = fields.Integer()
-
-
-        
