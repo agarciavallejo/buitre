@@ -14,7 +14,7 @@ class Oportunity(Entity, Base):
     user_id         = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
 
     def __init__(self, name, user_id, description = "", 
-        latitude = None, longitude = None, score = 0, closing_date = None,):
+        latitude = None, longitude = None, score = 0, closing_date = None):
         self.name = name
         self.description = description
         self.latitude = latitude
