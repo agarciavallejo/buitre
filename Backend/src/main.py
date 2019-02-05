@@ -19,7 +19,7 @@ app.config.from_object(Config)
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
-
+             
 session = Session()
 
 #create test user
