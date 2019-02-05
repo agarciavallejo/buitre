@@ -8,6 +8,8 @@ from .entities.oportunity import Oportunity, OportunitySchema
 from .entities.entity import Base
 from controller import Controller
 
+# Comment added to test autopep hook
+
 #create app
 app = Flask(__name__)
 CORS(app)
