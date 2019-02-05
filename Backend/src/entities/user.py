@@ -2,9 +2,10 @@ from sqlalchemy import Column, String, Numeric, Integer, Boolean
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
+
 class User(Entity, Base):
     __tablename__ = 'User'
-    
+
     name = Column(String)
     email = Column(String)
     password = Column(String)
@@ -13,10 +14,11 @@ class User(Entity, Base):
     radius = Column(Integer)
     is_valid = Column(Boolean)
     score = Column(Integer)
-    
+
     def __init__(self, name, created_by):
         Entity.__init__(self, created_by)
         self.name = name
+
 
 class UserSchema(Schema):
     id = fields.Integer()
