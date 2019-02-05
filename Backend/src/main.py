@@ -7,6 +7,7 @@ from .entities.user import User, UserSchema
 from .entities.oportunity import Oportunity, OportunitySchema
 from .entities.entity import Base
 from controller import Controller
+import db
 
 #create app
 app = Flask(__name__)
@@ -14,6 +15,8 @@ CORS(app)
 
 #database
 app.config.from_object(Config)
+print app.app_context() 
+
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)

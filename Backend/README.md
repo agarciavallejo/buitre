@@ -6,3 +6,4 @@ Flask app uses the following python libs:
 * `sqlalchemy`
 * `marshmallow`
 * `psycopg2`
+* `pytest`
