@@ -4,5 +4,5 @@ RUN apt-get install -y python-pip python-dev build-essential
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["src/main.py"]
+ENTRYPOINT ["bash"]
+CMD ["bootstrap.sh"]

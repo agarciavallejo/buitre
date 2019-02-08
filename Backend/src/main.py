@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from Backend.config import Config
+from config import Config
 from .entities.user import User, UserSchema
 from .entities.oportunity import Oportunity, OportunitySchema
 from .entities.entity import Base
