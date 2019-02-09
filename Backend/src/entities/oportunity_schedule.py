@@ -1,15 +1,13 @@
-from sqlalchemy import Column, Time, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Time, Boolean, ForeignKey
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
 
-class OpportunitySchedule(Entity, Base):
-    _tablename__ = 'OportunitySchedule'
+class OportunitySchedule(Entity, Base):
+    __tablename__ = 'OportunitySchedule'
 
-    oportunity_id = Column("oportunity_id", Integer,
-        ForeignKey('Oportunity.id'), nullable=False, primary_key=True)
-    start_time = Column("start_time", Time)
-    end_time = Column("end_time", Time)
+    start_time = Column("start_time", Time, nullable=False)
+    end_time = Column("end_time", Time, nullable=False)
     monday = Column("monday", Boolean)
     tuesday = Column("tuesday", Boolean)
     wednesday = Column("wednesday", Boolean)
@@ -17,10 +15,11 @@ class OpportunitySchedule(Entity, Base):
     friday = Column("friday", Boolean)
     saturday = Column("saturday", Boolean)
     sunday = Column("sunday", Boolean)
+    oportunity_id = Column("oportunity_id", Integer, ForeignKey('Oportunity.id'),
+        nullable=False)
 
-    def __init__(opportunity_id, start_time, end_time,
-        mo, tu, we, th, fr, sa, su):
-        self.oportunity_id = opportunity_id
+    def __init__(self, opportunity_id, start_time, end_time,
+        mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
         self.start_time = start_time
         self.end_time = end_time
         self.monday = mo
@@ -30,9 +29,11 @@ class OpportunitySchedule(Entity, Base):
         self.friday = fr
         self.saturday = sa
         self.sunday = su
+        self.oportunity_id = opportunity_id
 
 
-class OpportunityLikeSchema:
+class OportunityScheduleSchema(Schema):
+    id = fields.Integer()
     oportunity_id = fields.Integer()
     start_time = fields.Time()
     end_time = fields.Time()

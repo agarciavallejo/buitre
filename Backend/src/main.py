@@ -5,8 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from Backend.config import Config
 from .entities.user import User, UserSchema
 from .entities.oportunity import Oportunity, OportunitySchema
+from .entities.oportunity_schedule import OportunitySchedule, OportunityScheduleSchema
 from .entities.entity import Base
 from controller import Controller
+
+from pprint import pprint
 
 # Comment added to test autopep hook  adas
 
@@ -66,3 +69,16 @@ def create_opo(user_id):
 def create_oportunity():
     q = request.args
     return jsonify(q)
+
+
+@app.route("/test")
+def test_action():
+    test_schedule = OportunitySchedule(4, "10:00", "12:00")
+    session.add(test_schedule)
+    session.commit()
+    db_sch = session.query(OportunitySchedule).all()
+    session.close()
+    o_sch = OportunityScheduleSchema(many=True)
+    schedules = o_sch.dump(db_sch)
+
+    return jsonify(schedules)
