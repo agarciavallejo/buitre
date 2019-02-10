@@ -1,0 +1,29 @@
+version: '2.1'
+services:
+## Ubuntu server with psql installed
+  postgres:
+    restart: always
+    image: postgres:10
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - PSOTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${DB}
+    volumes:
+      - ./posgrest-data/postgres:/var/lib/posgresql/posgrest-data
+    ports:
+      - 5432:5432
+## Uses dockerfile in /Backend to build the image & run the container
+  back:
+    restart: always
+    build: ./Backend
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/Backend
+    dependson:
+      - postgres
+    entrypoint: ["bash","bootstrap.sh"]
+## FRONT, a definir seguns requisits de Angular
+  front:
+    restart: always
+    build: ./Frontend
