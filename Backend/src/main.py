@@ -5,11 +5,8 @@ from sqlalchemy.orm import sessionmaker
 from Backend.config import Config
 from .entities.user import User, UserSchema
 from .entities.oportunity import Oportunity, OportunitySchema
-from .entities.oportunity_schedule import OportunitySchedule, OportunityScheduleSchema
 from .entities.entity import Base
 from controller import Controller
-
-from pprint import pprint
 
 # Comment added to test autopep hook  adas
 
@@ -24,6 +21,8 @@ Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 
 session = Session()
+c = Controller(session)
+
 
 # create test user
 initial_users = session.query(User).all()
@@ -56,7 +55,6 @@ def list_oportunities():
 # route params test
 @app.route("/oportunity/create/<user_id>")
 def create_opo(user_id):
-    c = Controller(session)
     user = c.getUser(user_id)
     if(user):
         c.createOportunity("Oportunitat2", user_id)
@@ -73,9 +71,10 @@ def create_oportunity():
 
 @app.route("/test")
 def test_action():
-    test_schedule = OportunitySchedule(4, "10:00", "12:00")
-    session.add(test_schedule)
-    session.commit()
+    opo_id = 1
+    user_id = 1
+    sch_id = c.createOportunitySchedule(user_id, opo_id, "8:00", "16:30")
+    return "Schedule created with id: %s" % sch_id
     db_sch = session.query(OportunitySchedule).all()
     session.close()
     o_sch = OportunityScheduleSchema(many=True)

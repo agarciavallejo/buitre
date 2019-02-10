@@ -1,5 +1,6 @@
 from entities.user import User, UserSchema
 from entities.oportunity import Oportunity, OportunitySchema
+from entities.oportunity_schedule import OportunitySchedule, OportunityScheduleSchema
 
 
 class Controller:
@@ -31,4 +32,19 @@ class Controller:
             closing_date=None)
         self.session.add(test_opo)
         self.session.commit()
-        return True  # @TODO: return oportunity_id
+        return test_opo.id
+
+    def createOportunitySchedule(self, user_id, oportunity_id, stime, etime,
+        mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
+
+        test_schedule = OportunitySchedule(
+            user_id,
+            oportunity_id,
+            stime,
+            etime,
+            mo, tu, we, th, fr, sa, su
+        )
+        self.session.add(test_schedule)
+        self.session.flush()
+        self.session.commit()
+        return test_schedule.id

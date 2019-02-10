@@ -18,8 +18,9 @@ class OportunitySchedule(Entity, Base):
     oportunity_id = Column("oportunity_id", Integer, ForeignKey('Oportunity.id'),
         nullable=False)
 
-    def __init__(self, opportunity_id, start_time, end_time,
+    def __init__(self, user_id, opportunity_id, start_time, end_time,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
+        Entity.__init__(self, user_id)
         self.start_time = start_time
         self.end_time = end_time
         self.monday = mo
