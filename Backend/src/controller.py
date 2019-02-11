@@ -1,5 +1,5 @@
-from entities.user import User, UserSchema
-from entities.oportunity import Oportunity, OportunitySchema
+from .entities.user import User, UserSchema
+from .entities.oportunity import Oportunity, OportunitySchema
 
 class Controller:
 
