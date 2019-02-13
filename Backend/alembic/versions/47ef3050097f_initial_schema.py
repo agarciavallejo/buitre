@@ -71,15 +71,15 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("start_time", sa.Time, nullable=False)
-    	sa.Column("end_time", sa.Time, nullable=False)
-    	sa.Column("monday", sa.Boolean)
-    	sa.Column("tuesday", sa.Boolean)
-    	sa.Column("wednesday", sa.Boolean)
-    	sa.Column("thursday", sa.Boolean)
-    	sa.Column("friday", sa.Boolean)
-    	sa.Column("saturday", sa.Boolean)
-    	sa.Column("sunday", sa.Boolean)
+    	sa.Column("start_time", sa.Time, nullable=False),
+    	sa.Column("end_time", sa.Time, nullable=False),
+    	sa.Column("monday", sa.Boolean),
+    	sa.Column("tuesday", sa.Boolean),
+    	sa.Column("wednesday", sa.Boolean),
+    	sa.Column("thursday", sa.Boolean),
+    	sa.Column("friday", sa.Boolean),
+    	sa.Column("saturday", sa.Boolean),
+    	sa.Column("sunday", sa.Boolean),
     	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False)
     )
 
@@ -89,7 +89,7 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False, primary_key=True)
+    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False, primary_key=True),
     	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False, primary_key=True)
     )
 
@@ -99,7 +99,7 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False)
+    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False),
     	sa.Column('path', sa.String)
     )
 
@@ -109,7 +109,7 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("name", sa.String)
+    	sa.Column("name", sa.String),
     	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'))
     )
 
@@ -119,28 +119,32 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("name", String)
-    	sa.Column("email" String)
-    	sa.Column('password', String)
-    	sa.Column('latitude', sa.Numeric(9, 6))
-    	sa.Column('longitude', sa.Numeric(9, 6))
-    	sa.Column('radius', sa.Integer)
-    	sa.Column('is_valid', sa.Boolean)
+    	sa.Column("name", String),
+    	sa.Column("email", String),
+    	sa.Column('password', String),
+    	sa.Column('latitude', sa.Numeric(9, 6)),
+    	sa.Column('longitude', sa.Numeric(9, 6)),
+    	sa.Column('radius', sa.Integer),
+    	sa.Column('is_valid', sa.Boolean),
     	sa.Column('score', sa.Integer)
     )
 
     op.create_table(
-    	'User',
+    	'UserTag',
     	sa.Column('id', sa.Integer, primary_key=True),
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
+    	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False),
 		sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
     )
 
 
 def downgrade():
+	op.drop_table('UserTag')
+	op.drop_table('User')
+	op.drop_table('Tag')
+	op.drop_table('Picture')
 	op.drop_table('OpportunityTag')
 	op.drop_table('OpportunitySchedule')
 	op.drop_table('OpportunityLike')
