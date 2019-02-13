@@ -62,7 +62,7 @@ def upgrade():
     	sa.Column('last_updated_by', sa.String(16)),
 		sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False),
     	sa.Column("user_id", sa.Integer, sa.ForeignKey('User.id'), nullable=False),
-    	sa.Column("score", sa.Integer)
+    	sa.Column("score", sa.Integer)  # ??
     )
 
     op.create_table(
@@ -89,8 +89,54 @@ def upgrade():
     	sa.Column('created_at', sa.DateTime),
     	sa.Column('updated_at', sa.DateTime),
     	sa.Column('last_updated_by', sa.String(16)),
-    	sa.Column("oportunity_id", sa.Integer, sa.ForeignKey('Oportunity.id'), nullable=False, primary_key=True)
+    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False, primary_key=True)
     	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False, primary_key=True)
+    )
+
+    op.create_table(
+    	'Picture',
+    	sa.Column('id', sa.Integer, primary_key=True),
+    	sa.Column('created_at', sa.DateTime),
+    	sa.Column('updated_at', sa.DateTime),
+    	sa.Column('last_updated_by', sa.String(16)),
+    	sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False)
+    	sa.Column('path', sa.String)
+    )
+
+    op.create_table(
+    	'Tag',
+    	sa.Column('id', sa.Integer, primary_key=True),
+    	sa.Column('created_at', sa.DateTime),
+    	sa.Column('updated_at', sa.DateTime),
+    	sa.Column('last_updated_by', sa.String(16)),
+    	sa.Column("name", sa.String)
+    	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'))
+    )
+
+    op.create_table(
+    	'User',
+    	sa.Column('id', sa.Integer, primary_key=True),
+    	sa.Column('created_at', sa.DateTime),
+    	sa.Column('updated_at', sa.DateTime),
+    	sa.Column('last_updated_by', sa.String(16)),
+    	sa.Column("name", String)
+    	sa.Column("email" String)
+    	sa.Column('password', String)
+    	sa.Column('latitude', sa.Numeric(9, 6))
+    	sa.Column('longitude', sa.Numeric(9, 6))
+    	sa.Column('radius', sa.Integer)
+    	sa.Column('is_valid', sa.Boolean)
+    	sa.Column('score', sa.Integer)
+    )
+
+    op.create_table(
+    	'User',
+    	sa.Column('id', sa.Integer, primary_key=True),
+    	sa.Column('created_at', sa.DateTime),
+    	sa.Column('updated_at', sa.DateTime),
+    	sa.Column('last_updated_by', sa.String(16)),
+    	sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
+		sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
     )
 
 
