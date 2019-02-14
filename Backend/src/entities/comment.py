@@ -6,7 +6,6 @@ from marshmallow import Schema, fields
 class Comment(Entity, Base):
     __tablename__ = 'Comment'
 
-    text = Column("text", String)
     description = Column("description", String)
     score = Column("score", Numeric)
     opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'), nullable=False)
