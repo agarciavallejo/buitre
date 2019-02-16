@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .config import Config
 from .entities.user import User, UserSchema
-from .entities.oportunity import Opportunity, OpportunitySchema
+from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
 
@@ -45,7 +45,7 @@ def get_users():
 def list_opportunities():
     db_oppos = session.query(Opportunity).all()
     o_sch = OpportunitySchema(many=True)
-    opportunities = o_sch.dump(db_opos)
+    opportunities = o_sch.dump(db_oppos)
     session.close()
     return jsonify(opportunities)
 
