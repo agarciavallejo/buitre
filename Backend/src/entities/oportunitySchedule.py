@@ -3,8 +3,8 @@ from .entity import Entity, Base
 from marshmallow import Schema, fields
 
 
-class OportunitySchedule(Entity, Base):
-    __tablename__ = 'OportunitySchedule'
+class OpportunitySchedule(Entity, Base):
+    __tablename__ = 'OpportunitySchedule'
 
     start_time = Column("start_time", Time, nullable=False)
     end_time = Column("end_time", Time, nullable=False)
@@ -15,7 +15,7 @@ class OportunitySchedule(Entity, Base):
     friday = Column("friday", Boolean)
     saturday = Column("saturday", Boolean)
     sunday = Column("sunday", Boolean)
-    oportunity_id = Column("oportunity_id", Integer, ForeignKey('Oportunity.id'),
+    opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'),
         nullable=False)
 
     def __init__(self, user_id, opportunity_id, start_time, end_time,
@@ -33,9 +33,9 @@ class OportunitySchedule(Entity, Base):
         self.oportunity_id = opportunity_id
 
 
-class OportunityScheduleSchema(Schema):
+class OpportunityScheduleSchema(Schema):
     id = fields.Integer()
-    oportunity_id = fields.Integer()
+    opportunity_id = fields.Integer()
     start_time = fields.Time()
     end_time = fields.Time()
     monday = fields.Boolean()

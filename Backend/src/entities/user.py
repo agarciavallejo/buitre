@@ -6,14 +6,14 @@ from marshmallow import Schema, fields
 class User(Entity, Base):
     __tablename__ = 'User'
 
-    name = Column(String)
-    email = Column(String)
-    password = Column(String)
-    latitude = Column(Numeric(9, 6))
-    longitude = Column(Numeric(9, 6))
-    radius = Column(Integer)
-    is_valid = Column(Boolean)
-    score = Column(Integer)
+    name = Column("name", String)
+    email = Column("email", String)
+    password = Column("password", String)
+    latitude = Column("latitude", Numeric(9, 6))
+    longitude = Column("longitude", Numeric(9, 6))
+    radius = Column("radius", Integer)
+    is_valid = Column("is_valid", Boolean)
+    score = Column("score", Integer)
 
     def __init__(self, name, created_by):
         Entity.__init__(self, created_by)

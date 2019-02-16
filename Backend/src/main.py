@@ -2,11 +2,11 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from config import Config
+from .config import Config
 from .entities.user import User, UserSchema
-from .entities.oportunity import Oportunity, OportunitySchema
+from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
-from controller import Controller
+from .controller import Controller
 
 # Comment added to test autopep hook  adas
 
@@ -43,28 +43,28 @@ def get_users():
     return jsonify(users)
 
 
-@app.route("/oportunity")
-def list_oportunities():
-    db_opos = session.query(Oportunity).all()
-    o_sch = OportunitySchema(many=True)
-    oportunities = o_sch.dump(db_opos)
+@app.route("/opportunity")
+def list_opportunities():
+    db_oppos = session.query(Opportunity).all()
+    o_sch = OpportunitySchema(many=True)
+    opportunities = o_sch.dump(db_oppos)
     session.close()
-    return jsonify(oportunities)
+    return jsonify(opportunities)
 
 
 # route params test
-@app.route("/oportunity/create/<user_id>")
+@app.route("/opportunity/create/<user_id>")
 def create_opo(user_id):
     user = c.getUser(user_id)
     if(user):
-        c.createOportunity("Oportunitat2", user_id)
+        c.createOpportunity("Oportunitat2", user_id)
         return "DONE"
     else:
         return "USER NOT FOUND"
 
 # query string params test
-@app.route("/oportunity/find")
-def create_oportunity():
+@app.route("/opportunity/find")
+def create_opportunity():
     q = request.args
     return jsonify(q)
 
