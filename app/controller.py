@@ -1,6 +1,6 @@
-from entities.user import User, UserSchema
-from entities.oportunity import Oportunity, OportunitySchema
-from entities.oportunity_schedule import OportunitySchedule, OportunityScheduleSchema
+from .entities.user import User, UserSchema
+from .entities.opportunity import Opportunity, OpportunitySchema
+from .entities.opportunitySchedule import OpportunitySchedule, OpportunityScheduleSchema
 
 
 class Controller:
