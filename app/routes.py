@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from . import app
+from flask import  jsonify, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from .config import Config
@@ -7,12 +7,6 @@ from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
-
-# Comment added to test autopep hook  adas
-
-# create app
-app = Flask(__name__)
-CORS(app)
 
 # database
 app.config.from_object(Config)
@@ -34,6 +28,8 @@ if len(initial_users) == 0:
     session.close()
 
 # public methods
+@app.route('/')
+
 @app.route("/users")
 def get_users():
     users_object = session.query(User).all()
