@@ -15,6 +15,8 @@ Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 
 session = Session()
+c = Controller(session)
+
 
 # create test user
 initial_users = session.query(User).all()
@@ -49,7 +51,6 @@ def list_opportunities():
 # route params test
 @app.route("/opportunity/create/<user_id>")
 def create_opo(user_id):
-    c = Controller(session)
     user = c.getUser(user_id)
     if(user):
         c.createOpportunity("Oportunitat2", user_id)
@@ -62,3 +63,17 @@ def create_opo(user_id):
 def create_opportunity():
     q = request.args
     return jsonify(q)
+
+
+@app.route("/test")
+def test_action():
+    opo_id = 1
+    user_id = 1
+    sch_id = c.createOportunitySchedule(user_id, opo_id, "8:00", "16:30")
+    return "Schedule created with id: %s" % sch_id
+    db_sch = session.query(OportunitySchedule).all()
+    session.close()
+    o_sch = OportunityScheduleSchema(many=True)
+    schedules = o_sch.dump(db_sch)
+
+    return jsonify(schedules)
