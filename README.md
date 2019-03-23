@@ -9,6 +9,28 @@ Flask app uses the following python libs:
 * `graphene`
 * `graphene-sqlalchemy`
 
+## POSTGRESQL
+
+1. Install:
+`sudo apt install postgresql postgresql-contrib`
+
+2. Instanciate postgres user
+`sudo -u postgres -i`
+
+3. Create app user & buitre database
+`CREATE USER app WITH PASSWORD '1234';`
+`CREATE DATABASE buitre OWNER app;`
+
+4. Run Alembic Migrations
+`alembic upgrade 47ef3050097f #initial migration`
+@TODO: find a way to "upgrade to the whole migrations collection"
+
+## RUN FLASK APP
+
+`export FLASK_APP=buitre.py`
+`flask run`
+browse `127.0.0.1:5000`
+
 ## DOCKER	
 
 Run single flask app container (no DB)
@@ -23,5 +45,5 @@ Run single flask app container (no DB)
 `docker run -d -p 80:80 --name buitre_ctn buitre_image`
 
 4. Check container is running
-`docker ps`
+`docker ps -a`
 

@@ -7,6 +7,7 @@ from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
+from ql import schema
 
 # database
 app.config.from_object(Config)
@@ -16,7 +17,6 @@ Base.metadata.create_all(engine)
 
 session = Session()
 c = Controller(session)
-
 
 # create test user
 initial_users = session.query(User).all()
@@ -77,3 +77,13 @@ def test_action():
     schedules = o_sch.dump(db_sch)
 
     return jsonify(schedules)
+
+# GraphQL Interface
+@app.route('graphql', methods=['POST'])
+def query():
+    query = request.json.get('query')
+    variables = request.json.get('variables') # Todo: add handling variables
+    logger.debug('Query: %s', request.json)
+    result = schema.execute(query)
+    result_hash = format_result(result)
+    return result_hash
