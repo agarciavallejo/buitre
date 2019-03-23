@@ -1,4 +1,4 @@
-Dependencies
+## Dependencies
 
 Flask app uses the following python libs:
 
@@ -6,6 +6,8 @@ Flask app uses the following python libs:
 * `sqlalchemy`
 * `marshmallow`
 * `psycopg2`
+* `graphene`
+* `graphene-sqlalchemy`
 
 ## DOCKER	
 
