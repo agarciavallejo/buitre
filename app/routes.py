@@ -69,11 +69,12 @@ def create_opportunity():
 def test_action():
     opo_id = 1
     user_id = 1
-    sch_id = c.createOportunitySchedule(user_id, opo_id, "8:00", "16:30")
+    sch_id = c.createOpportunitySchedule(user_id, opo_id, "8:00", "16:30")
     return "Schedule created with id: %s" % sch_id
     db_sch = session.query(OportunitySchedule).all()
     session.close()
-    o_sch = OportunityScheduleSchema(many=True)
+    o_sch = OpportunityScheduleSchema(many=True)
     schedules = o_sch.dump(db_sch)
 
     return jsonify(schedules)
+

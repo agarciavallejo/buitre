@@ -4,7 +4,7 @@ from marshmallow import Schema, fields
 
 
 class Opportunity(Entity, Base):
-    __tablename__ = 'Oportunity'
+    __tablename__ = 'Opportunity'
 
     name = Column("name", String)
     description = Column("description", String)
