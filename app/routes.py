@@ -7,6 +7,9 @@ from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
+from .utils import BuitreEncoder
+#from ql import schema
+
 
 # database
 app.config.from_object(Config)
@@ -17,6 +20,8 @@ Base.metadata.create_all(engine)
 session = Session()
 c = Controller(session)
 
+
+app.json_encoder = BuitreEncoder
 
 # create test user
 initial_users = session.query(User).all()
