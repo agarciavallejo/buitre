@@ -10,17 +10,17 @@ from .entities.user import User
 class OpportunityObject(SQLAlchemyObjectType): 
     class Meta:
         model = Opportunity
-        interfaces = (graphene.relay.Node)
+        interfaces = (graphene.relay.Node, )
 
 class TagObject(SQLAlchemyObjectType):
     class Meta:
         model = Tag
-        interfaces = (graphene.relay.Node)
+        interfaces = (graphene.relay.Node, )
 
 class UserObject(SQLAlchemyObjectType):
 	class Meta:
 		model = User
-		interfaces = (graphene.relay.Node)
+		interfaces = (graphene.relay.Node, )
 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
@@ -28,4 +28,4 @@ class Query(graphene.ObjectType):
     all_tags = SQLAlchemyConnectionField(TagObject)
     all_users = SQLAlchemyConnectionField(UserObject)
 
-schema = grapene.Schema(query=Query, types=[OpportunityObject, TagObject, UserObject])
+qlschema = graphene.Schema(query=Query, types=[OpportunityObject, TagObject, UserObject])

@@ -8,7 +8,8 @@ from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
 from .utils import BuitreEncoder
-#from ql import schema
+from ql import qlschema, GraphQLView
+
 
 # database
 app.config.from_object(Config)
@@ -82,13 +83,21 @@ def test_action():
     return jsonify(schedules)
 
 # GraphQL Interface
-"""
-@app.route('graphql', methods=['POST'])
-def query():
-    query = request.json.get('query')
-    variables = request.json.get('variables') # Todo: add handling variables
-    logger.debug('Query: %s', request.json)
-    result = schema.execute(query)
-    result_hash = format_result(result)
-    return result_hash
-"""
+
+# @app.route('graphql', methods=['POST'])
+# def query():
+#     query = request.json.get('query')
+#     variables = request.json.get('variables') # Todo: add handling variables
+#     #logger.debug('Query: %s', request.json)
+#     result = qlschema.execute(query)
+#     result_hash = format_result(result)
+#     return result_hash
+
+app.add_url_rule(
+    '/graphql',
+    view_func=GraphQLView.as_view(
+        'graphql',
+        schema=qlschema,
+        graphiql=True # for having the GraphiQL interface
+    )
+)
