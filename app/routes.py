@@ -7,7 +7,8 @@ from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base
 from .controller import Controller
-from ql import schema
+import sys
+#from ql import schema
 
 # database
 app.config.from_object(Config)
@@ -69,16 +70,17 @@ def create_opportunity():
 def test_action():
     opo_id = 1
     user_id = 1
-    sch_id = c.createOportunitySchedule(user_id, opo_id, "8:00", "16:30")
+    sch_id = c.createOpportunitySchedule(user_id, opo_id, "8:00", "16:30")
     return "Schedule created with id: %s" % sch_id
     db_sch = session.query(OportunitySchedule).all()
     session.close()
-    o_sch = OportunityScheduleSchema(many=True)
+    o_sch = OpportunityScheduleSchema(many=True)
     schedules = o_sch.dump(db_sch)
 
     return jsonify(schedules)
 
 # GraphQL Interface
+"""
 @app.route('graphql', methods=['POST'])
 def query():
     query = request.json.get('query')
@@ -87,3 +89,4 @@ def query():
     result = schema.execute(query)
     result_hash = format_result(result)
     return result_hash
+"""

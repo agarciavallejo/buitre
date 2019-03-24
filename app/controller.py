@@ -19,10 +19,10 @@ class Controller:
 
     def getOportunity(self, id):
         db_oportunity = self.session.query(Oportunity).get(id)
-        sch = OportunitySchema()
+        sch = OpportunitySchema()
 
-    def createOportunity(self, name, user_id):
-        test_opo = Oportunity(
+    def createOpportunity(self, name, user_id):
+        test_opo = Opportunity(
             name,
             user_id,
             description="",
@@ -34,10 +34,10 @@ class Controller:
         self.session.commit()
         return test_opo.id
 
-    def createOportunitySchedule(self, user_id, oportunity_id, stime, etime,
+    def createOpportunitySchedule(self, user_id, oportunity_id, stime, etime,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
 
-        test_schedule = OportunitySchedule(
+        test_schedule = OpportunitySchedule(
             user_id,
             oportunity_id,
             stime,
