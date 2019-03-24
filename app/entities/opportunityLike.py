@@ -4,7 +4,7 @@ from marshmallow import Schema, fields
 
 
 class OpportunityLike(Entity, Base):
-    _tablename__ = 'OportunityLike'
+    _tablename__ = 'OpportunityLike'
 
     opportunity_id = Column("opportunity_id", Integer,
         ForeignKey('Opportunity.id'), nullable=False, primary_key=True)
