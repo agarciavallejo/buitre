@@ -1,8 +1,22 @@
+from .. import app
+from ..config import Config
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+
+# database
+app.config.from_object(Config)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+Session = sessionmaker(bind=engine)
+session = Session()
+
 Base = declarative_base()
+#Base.query = session.query_property()
+
+Base.metadata.create_all(engine)
 
 class Entity():
     id = Column(Integer, primary_key=True)

@@ -1,23 +1,15 @@
 from . import app
 from flask import  jsonify, request
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from .config import Config
 from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
-from .entities.entity import Base
+from .entities.entity import Base, session
 from .controller import Controller
 from .utils import BuitreEncoder
 from ql import qlschema, GraphQLView
 
+app.debug=True
 
-# database
-app.config.from_object(Config)
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-Session = sessionmaker(bind=engine)
-Base.metadata.create_all(engine)
 
-session = Session()
 c = Controller(session)
 
 app.json_encoder = BuitreEncoder
@@ -92,6 +84,11 @@ def test_action():
 #     result = qlschema.execute(query)
 #     result_hash = format_result(result)
 #     return result_hash
+
+@app.route('/qltest')
+def test_graphql():
+    res = qlschema.execute('{ hello }')
+    return res.data['hello'];
 
 app.add_url_rule(
     '/graphql',
