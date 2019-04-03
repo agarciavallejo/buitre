@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b355ee0e96b023dd485c90252fbf7bb7eb68ea605a891e5c41cc9073069e2286"
+            "sha256": "5488a502816b69792b75e23360598d06c3092facdc26b0a701b2d3cca57df047"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -54,6 +54,13 @@
             "index": "pypi",
             "version": "==3.0.7"
         },
+        "flask-graphql": {
+            "hashes": [
+                "sha256:b4e23dfd767f7028835208db0bfa7145f59467225882e6d4f560d15c09f32de8"
+            ],
+            "index": "pypi",
+            "version": "==2.0.0"
+        },
         "graphene": {
             "hashes": [
                 "sha256:b8ec446d17fa68721636eaad3d6adc1a378cb6323e219814c8f98c9928fc9642",
@@ -82,6 +89,12 @@
                 "sha256:2716b7245d97091af21abf096fabafac576905096d21ba7118fba722596f65db"
             ],
             "version": "==0.4.5"
+        },
+        "graphql-server-core": {
+            "hashes": [
+                "sha256:e5f82add4b3d5580aa1f1e7d9f00e944ad3abe1b65eb337e611d6a77cc20f231"
+            ],
+            "version": "==1.1.1"
         },
         "gunicorn": {
             "hashes": [

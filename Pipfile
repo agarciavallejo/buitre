@@ -21,6 +21,7 @@ Werkzeug = "==0.14.1"
 alembic = "*"
 graphene = "*"
 graphene-sqlalchemy = "*"
+flask-graphql = "*"
 
 [requires]
 python_version = "3.6"
