@@ -76,3 +76,4 @@ class Query(graphene.ObjectType):
 
 
 qlschema = graphene.Schema(query=Query)
+

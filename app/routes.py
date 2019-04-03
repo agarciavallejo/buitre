@@ -5,13 +5,11 @@ from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base, session
 from .controller import Controller
 from .utils import BuitreEncoder
-from ql import qlschema, GraphQLView
+from .ql import qlschema, GraphQLView
 
-app.debug=True
+app.debug = True
 
 c = Controller(session)
-
-app.json_encoder = BuitreEncoder
 
 app.json_encoder = BuitreEncoder
 
@@ -74,6 +72,7 @@ def test_action():
     schedules = o_sch.dump(db_sch)
 
     return jsonify(schedules)
+    
 # GraphQL Interface
 
 # @app.route('graphql', methods=['POST'])
