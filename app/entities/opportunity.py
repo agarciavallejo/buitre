@@ -16,6 +16,7 @@ class Opportunity(Entity, Base):
     user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
 
     user = relationship("User", back_populates="opportunities")
+    pictures = relationship("Picture")
 
     def __init__(self, name, user_id, description="",
         latitude=None, longitude=None, score=0, closing_date=None):
