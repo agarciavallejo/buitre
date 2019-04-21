@@ -7,6 +7,7 @@ from .entities.user import User
 
 # GraphQL Schema Objects
 
+# OPPORTUNITY
 class OpportunityObject(SQLAlchemyObjectType): 
     class Meta:
         model = Opportunity
@@ -20,30 +21,37 @@ class OpportunityConnection(graphene.relay.Connection):
     class Meta:
         node = OpportunityObject
 
+# TAG
 class TagObject(SQLAlchemyObjectType):
     class Meta:
         model = Tag
         interfaces = (graphene.relay.Node, )
 
+# USER
 class UserObject(SQLAlchemyObjectType):
 	class Meta:
 		model = User
 		interfaces = (graphene.relay.Node, )
+    
 
+class UserConnection(graphene.relay.Connection):
+    class Meta:
+        node = UserObject
+
+
+# GraphQL QUERY definition 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
 
-    hello = graphene.String(argument=graphene.String(default_value="stranger"))
-    
-    def resolve_hello(self, info, argument):
-        return 'Hola '+argument
-
     opportunity = graphene.relay.Node.Field(OpportunityObject)
-
     def resolve_opportunity():
         return 
-
     all_opportunities = SQLAlchemyConnectionField(OpportunityConnection)
+
+    user = graphene.relay.Node.Field(UserObject)
+    def resolve_user():
+        return
+    all_users = SQLAlchemyConnectionField(UserConnection)
 
 
 
