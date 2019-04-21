@@ -76,7 +76,7 @@ def test_action():
     user_id = 1
     sch_id = c.createOpportunitySchedule(user_id, opo_id, "8:00", "16:30")
     return "Schedule created with id: %s" % sch_id
-    db_sch = session.query(OportunitySchedule).all()
+    db_sch = session.query(OpportunitySchedule).all()
     session.close()
     o_sch = OpportunityScheduleSchema(many=True)
     schedules = o_sch.dump(db_sch)

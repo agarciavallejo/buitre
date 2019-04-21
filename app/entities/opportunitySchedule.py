@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Time, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
@@ -18,6 +19,8 @@ class OpportunitySchedule(Entity, Base):
     opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'),
         nullable=False)
 
+    opportunity = relationship("Opportunity")
+
     def __init__(self, user_id, opportunity_id, start_time, end_time,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
         Entity.__init__(self, user_id)
@@ -30,7 +33,7 @@ class OpportunitySchedule(Entity, Base):
         self.friday = fr
         self.saturday = sa
         self.sunday = su
-        self.oportunity_id = opportunity_id
+        self.opportunity_id = opportunity_id
 
 
 class OpportunityScheduleSchema(Schema):

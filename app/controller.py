@@ -38,12 +38,12 @@ class Controller:
         self.session.commit()
         return test_opo.id
 
-    def createOpportunitySchedule(self, user_id, oportunity_id, stime, etime,
+    def createOpportunitySchedule(self, user_id, opportunity_id, stime, etime,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
 
         test_schedule = OpportunitySchedule(
             user_id,
-            oportunity_id,
+            opportunity_id,
             stime,
             etime,
             mo, tu, we, th, fr, sa, su

@@ -17,6 +17,7 @@ class Opportunity(Entity, Base):
 
     user = relationship("User", back_populates="opportunities")
     pictures = relationship("Picture")
+    schedules = relationship("OpportunitySchedule")
 
     def __init__(self, name, user_id, description="",
         latitude=None, longitude=None, score=0, closing_date=None):
