@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy.orm import relationship
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
@@ -9,6 +10,8 @@ class Picture(Entity, Base):
     opportunity_id = Column("opportunity_id", Integer,
         ForeignKey('Opportunity.id'), nullable=False)
     path = Column("path", String)
+
+    opportunity = relationship("Opportunity")
 
     def __init__(self, opportunity_id, path):
         self.opportunity_id = opportunity_id

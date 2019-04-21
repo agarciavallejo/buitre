@@ -14,6 +14,7 @@ class Opportunity(Entity, Base):
     score = Column("score", Numeric)
     closing_date = Column("closing_date", Date)
     user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
+
     user = relationship("User", back_populates="opportunities")
 
     def __init__(self, name, user_id, description="",

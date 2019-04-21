@@ -15,6 +15,7 @@ class User(Entity, Base):
     radius = Column("radius", Integer)
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
+    
     opportunities = relationship("Opportunity", back_populates="user")
 
     def __init__(self, name, created_by):
