@@ -15,6 +15,7 @@ class Opportunity(Entity, Base):
     closing_date = Column("closing_date", Date)
     user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
 
+    comments = relationship("Comment")
     user = relationship("User", back_populates="opportunities")
     pictures = relationship("Picture")
     schedules = relationship("OpportunitySchedule")

@@ -1,6 +1,7 @@
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from flask_graphql import GraphQLView
+from .entities.comment import Comment
 from .entities.opportunity import Opportunity
 from .entities.opportunitySchedule import OpportunitySchedule
 from .entities.picture import Picture
@@ -8,6 +9,13 @@ from .entities.tag import Tag
 from .entities.user import User
 
 # GraphQL Schema Objects
+
+# COMMENT
+
+class CommentObject(SQLAlchemyObjectType):
+    class Meta:
+        model = Comment
+        interfaces = (graphene.relay.Node, )
 
 # OPPORTUNITY
 class OpportunityObject(SQLAlchemyObjectType): 
@@ -63,6 +71,8 @@ class UserConnection(graphene.relay.Connection):
 # GraphQL QUERY definition 
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
+
+    comment = graphene.relay.Node.Field(CommentObject)
 
     opportunity = graphene.relay.Node.Field(OpportunityObject)
     def resolve_opportunity():
