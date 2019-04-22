@@ -56,6 +56,14 @@ class TagObject(SQLAlchemyObjectType):
         model = Tag
         interfaces = (graphene.relay.Node, )
 
+    def resolve_all_tags(self, info):
+        query = self.get_query(info)
+        return query.all()
+
+class TagConnection(graphene.relay.Connection):
+    class Meta:
+        node = TagObject
+
 # USER
 class UserObject(SQLAlchemyObjectType):
 	class Meta:
@@ -72,7 +80,7 @@ class UserConnection(graphene.relay.Connection):
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
 
-    comment = graphene.relay.Node.Field(CommentObject)
+    comment = graphene.relay.Node.Field(CommentObject)  
 
     opportunity = graphene.relay.Node.Field(OpportunityObject)
     def resolve_opportunity():
@@ -83,6 +91,9 @@ class Query(graphene.ObjectType):
 
     picture = graphene.relay.Node.Field(PictureObject)
     all_pictures = SQLAlchemyConnectionField(PictureConnection)
+
+    tag = graphene.relay.Node.Field(TagObject)
+    all_tags = SQLAlchemyConnectionField(TagConnection)
 
     user = graphene.relay.Node.Field(UserObject)
     def resolve_user():

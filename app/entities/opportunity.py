@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
 from sqlalchemy.orm import relationship
 from .entity import Entity, Base
+from opportunityTag import OpportunityTag
 from marshmallow import Schema, fields
 
 
@@ -19,6 +20,7 @@ class Opportunity(Entity, Base):
     user = relationship("User", back_populates="opportunities")
     pictures = relationship("Picture")
     schedules = relationship("OpportunitySchedule")
+    tags = relationship("OpportunityTag", back_populates="opportunity")
 
     def __init__(self, name, user_id, description="",
         latitude=None, longitude=None, score=0, closing_date=None):

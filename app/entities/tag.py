@@ -9,9 +9,12 @@ class Tag(Entity, Base):
     name    = Column("name", String)
     tag_id  = Column("tag_id", Integer, ForeignKey('Tag.id'))
 
-    def __init__(self, name, tag_id):
+    opportunities = relationship("OpportunityTag", back_populates="tag")
+
+    def __init__(self, name, tag_id=None):
         self.name = name
-        self.tag_id = tag_id
+        if(tag_id != None):
+        	self.tag_id = tag_id
         
 
 class TagSchema(Schema):
