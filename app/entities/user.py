@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Numeric, Integer, Boolean
+from sqlalchemy.orm import relationship
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
@@ -14,6 +15,9 @@ class User(Entity, Base):
     radius = Column("radius", Integer)
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
+
+    comments = relationship("Comment")
+    opportunities = relationship("Opportunity", back_populates="user")
 
     def __init__(self, name, created_by):
         Entity.__init__(self, created_by)

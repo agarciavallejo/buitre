@@ -1,6 +1,7 @@
 from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.opportunitySchedule import OpportunitySchedule, OpportunityScheduleSchema
+from .entities.picture import Picture
 
 
 class Controller:
@@ -17,9 +18,12 @@ class Controller:
             return None  # raise UserNotFoundException
         return sch.dump(db_user)
 
-    def getOportunity(self, id):
-        db_oportunity = self.session.query(Oportunity).get(id)
+    def getOpportunity(self, id):
         sch = OpportunitySchema()
+        db_opportunity = self.session.query(Opportunity).get(id)
+        if(None == db_opportunity):
+            return None
+        return sch.dump(db_opportunity)
 
     def createOpportunity(self, name, user_id):
         test_opo = Opportunity(
@@ -34,12 +38,12 @@ class Controller:
         self.session.commit()
         return test_opo.id
 
-    def createOpportunitySchedule(self, user_id, oportunity_id, stime, etime,
+    def createOpportunitySchedule(self, user_id, opportunity_id, stime, etime,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
 
         test_schedule = OpportunitySchedule(
             user_id,
-            oportunity_id,
+            opportunity_id,
             stime,
             etime,
             mo, tu, we, th, fr, sa, su
@@ -48,3 +52,14 @@ class Controller:
         self.session.flush()
         self.session.commit()
         return test_schedule.id
+
+    def createOpportunityPicture(self, opportunity_id, path):
+        picture = Picture(
+            opportunity_id,
+            path
+        )
+
+        self.session.add(picture)
+        self.session.flush()
+        self.session.commit()
+        return picture.id

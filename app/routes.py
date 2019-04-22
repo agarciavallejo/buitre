@@ -53,6 +53,16 @@ def create_opo(user_id):
     else:
         return "USER NOT FOUND"
 
+@app.route("/opportunity/<id>/picture/add")
+def create_opportunity_picture(id):
+    opportunity = c.getOpportunity(id)
+    if(opportunity):
+        path = "path/to/a/file.png"
+        c.createOpportunityPicture(id, path)
+        return "DONE"
+    else:
+        return "NOT DONE"
+
 # query string params test
 @app.route("/opportunity/find")
 def create_opportunity():
@@ -66,7 +76,7 @@ def test_action():
     user_id = 1
     sch_id = c.createOpportunitySchedule(user_id, opo_id, "8:00", "16:30")
     return "Schedule created with id: %s" % sch_id
-    db_sch = session.query(OportunitySchedule).all()
+    db_sch = session.query(OpportunitySchedule).all()
     session.close()
     o_sch = OpportunityScheduleSchema(many=True)
     schedules = o_sch.dump(db_sch)

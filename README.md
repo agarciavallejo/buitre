@@ -27,6 +27,13 @@ Flask app uses the following python libs:
 
 ## RUN FLASK APP
 
+using `virtualenv`: this will install the dependencies
+
+`virtualenv venv`
+`source venv/bin/activate`
+
+Then run flask
+
 `export FLASK_APP=buitre.py`
 `flask run`
 browse `127.0.0.1:5000`

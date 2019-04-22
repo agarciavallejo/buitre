@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric
+from sqlalchemy.orm import relationship
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 
@@ -11,7 +12,10 @@ class Comment(Entity, Base):
     opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'), nullable=False)
     user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
 
-    def __init__(self, text, user_id, opportunity_id, text):
+    opportunity = relationship("Opportunity")
+    user = relationship("User")
+
+    def __init__(self, text, user_id, opportunity_id):
         self.text = text
         self.score = score
         self.opportunity_id = opportunity_id
