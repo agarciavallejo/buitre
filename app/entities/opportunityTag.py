@@ -11,6 +11,9 @@ class OpportunityTag(Entity, Base):
     tag_id = Column("tag_id", Integer,
         ForeignKey('Tag.id'), nullable=False, primary_key=True)
 
+    opportunity = relationship("Opportunity", back_populates="tags")
+    tag = relationship("Tag", back_populates="opportunities")
+
     def __init__(self, opportunity_id, tag_id):
         self.opportunity_id = opportunity_id
         self.tag_id = tag_id

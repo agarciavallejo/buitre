@@ -16,8 +16,11 @@ class User(Entity, Base):
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
 
-    comments = relationship("Comment")
-    opportunities = relationship("Opportunity", back_populates="user")
+    tags = relationship("UserTag", back_populates="user")
+    opportunities_created = relationship("Opportunity", back_populates="created_by")
+    opportunities_liked = relationship("OpportunityLike", back_populates="user")
+    comments_created = relationship("Comment", back_populates="created_by")
+    comments_liked = relationship("CommentLike", back_populates="user")
 
     def __init__(self, name, created_by):
         Entity.__init__(self, created_by)

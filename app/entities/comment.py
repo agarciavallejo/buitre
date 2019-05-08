@@ -9,11 +9,14 @@ class Comment(Entity, Base):
 
     text = Column("text", String)
     score = Column("score", Numeric)
-    opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'), nullable=False)
-    user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
+    opportunity_id = Column("opportunity_id", Integer,
+       ForeignKey('Opportunity.id'), nullable=False)
+    user_id = Column("user_id", Integer,
+        ForeignKey('User.id'), nullable=False)
 
-    opportunity = relationship("Opportunity")
-    user = relationship("User")
+    opportunity = relationship("Opportunity", back_populates="comments")
+    created_by = relationship("User", back_populates="comments_created")
+    liked_by = relationship("CommentLike", back_populates="comment")
 
     def __init__(self, text, user_id, opportunity_id):
         self.text = text

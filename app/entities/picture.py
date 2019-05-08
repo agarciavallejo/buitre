@@ -8,10 +8,10 @@ class Picture(Entity, Base):
     __tablename__ = 'Picture'
 
     opportunity_id = Column("opportunity_id", Integer,
-        ForeignKey('Opportunity.id'), nullable=False)
+         ForeignKey('Opportunity.id'), nullable=False)
     path = Column("path", String)
 
-    opportunity = relationship("Opportunity")
+    opportunity = relationship("Opportunity", back_populates="pictures")
 
     def __init__(self, opportunity_id, path):
         self.opportunity_id = opportunity_id
