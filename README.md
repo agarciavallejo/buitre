@@ -38,7 +38,17 @@ Then run flask
 `flask run`
 browse `127.0.0.1:5000`
 
-## DOCKER	
+## RUN FLASK APP 2
+
+using `pipenv`: this will install the dependencies
+install dependencies:
+
+Then run bootstrap
+
+`./bootstrap.sh`
+browse `127.0.0.1:8000`
+
+## DOCKER
 
 Run single flask app container (no DB)
 
@@ -53,4 +63,3 @@ Run single flask app container (no DB)
 
 4. Check container is running
 `docker ps -a`
-
