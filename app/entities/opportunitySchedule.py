@@ -16,10 +16,10 @@ class OpportunitySchedule(Entity, Base):
     friday = Column("friday", Boolean)
     saturday = Column("saturday", Boolean)
     sunday = Column("sunday", Boolean)
-    opportunity_id = Column("opportunity_id", Integer, ForeignKey('Opportunity.id'),
-        nullable=False)
-
-    opportunity = relationship("Opportunity")
+    opportunity_id = Column("opportunity_id", Integer,
+        ForeignKey('Opportunity.id'), nullable=False)
+    
+    opportunity = relationship("Opportunity", back_populates="schedules")
 
     def __init__(self, user_id, opportunity_id, start_time, end_time,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
