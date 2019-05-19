@@ -14,13 +14,15 @@ class Opportunity(Entity, Base):
     longitude = Column("longitude", Numeric(9, 6))
     score = Column("score", Numeric)
     closing_date = Column("closing_date", Date)
-    user_id = Column("user_id", Integer, ForeignKey('User.id'), nullable=False)
+    user_id = Column("user_id", Integer,
+        ForeignKey('User.id'), nullable=False)
 
-    comments = relationship("Comment")
-    user = relationship("User", back_populates="opportunities")
-    pictures = relationship("Picture")
-    schedules = relationship("OpportunitySchedule")
+    comments = relationship("Comment", back_populates="opportunity")
+    pictures = relationship("Picture", back_populates="opportunity")
+    schedules = relationship("OpportunitySchedule", back_populates="opportunity")
     tags = relationship("OpportunityTag", back_populates="opportunity")
+    created_by = relationship("User", back_populates="opportunities_created")
+    liked_by = relationship("OpportunityLike", back_populates="opportunity")
 
     def __init__(self, name, user_id, description="",
         latitude=None, longitude=None, score=0, closing_date=None):
