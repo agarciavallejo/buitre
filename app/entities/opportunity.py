@@ -1,7 +1,6 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
 from sqlalchemy.orm import relationship
 from .entity import Entity, Base
-from opportunityTag import OpportunityTag
 from marshmallow import Schema, fields
 
 

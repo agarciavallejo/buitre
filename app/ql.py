@@ -93,6 +93,8 @@ class Query(graphene.ObjectType):
     all_pictures = SQLAlchemyConnectionField(PictureConnection)
 
     tag = graphene.relay.Node.Field(TagObject)
+    def resolve_tag():
+        return
     all_tags = SQLAlchemyConnectionField(TagConnection)
 
     user = graphene.relay.Node.Field(UserObject)
