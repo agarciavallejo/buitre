@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from ..services.user.userService import UserService
+from ..lib.exceptions.argumentException import ArgumentException
 
 user_api = Blueprint('user_api',__name__)
 
@@ -9,15 +10,20 @@ def create_user():
 	email = request.form.get('email')
 	password = request.form.get('password')
 
-	args = [name, email, password]
+	args = {
+		'name': name, 
+		'email': email, 
+		'password': password
+	}
 
 	service = UserService()
-	result = service.create(args)
+	result = {}
+	try:
+		result = service.create(args)
+	except ArgumentException as e:
+		result['error'] = e.value
 
 	return jsonify(result)
-	# Format parameters
-	# Invoke CreateUser service
-	# Format & return result
 
 @user_api.route('/<int:id>',methods=['GET'])
 def get_user(id):
