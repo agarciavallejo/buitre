@@ -17,7 +17,6 @@ class Tag(Entity, Base):
         self.name = name
         # self.tag_id = tag_id
 
-
 class TagSchema(Schema):
     id  = fields.Integer()
     name = fields.Str()

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from .entity import Entity, Base
 from marshmallow import Schema, fields
 

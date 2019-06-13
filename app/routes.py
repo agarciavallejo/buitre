@@ -69,6 +69,18 @@ def create_opportunity():
     q = request.args
     return jsonify(q)
 
+@app.route('/opportunity/<id>/addtag/<tag_id>')
+def add_tag_to_opportunity(id,tag_id):
+    c.opportunityAddTag(int(id), int(tag_id))
+
+@app.route('/tag')
+def list_tags():
+    return jsonify(c.getTags())
+
+@app.route("/tag/create/<name>")
+def create_tag(name):
+    id = c.createTag(name)
+    return "Tag %s created with id %s" % (name, id)
 
 @app.route("/test")
 def test_action():

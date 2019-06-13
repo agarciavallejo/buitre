@@ -1,7 +1,9 @@
 from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.opportunitySchedule import OpportunitySchedule, OpportunityScheduleSchema
+from .entities.opportunityTag import OpportunityTag
 from .entities.picture import Picture
+from .entities.tag import Tag, TagSchema
 
 
 class Controller:
@@ -38,6 +40,12 @@ class Controller:
         self.session.commit()
         return test_opo.id
 
+    def opportunityAddTag(self, opportunity_id, tag_id):
+        opp_tag = OpportunityTag(opportunity_id, tag_id)
+        self.session.add(opp_tag)
+        self.session.flush()
+        self.session.commit()
+
     def createOpportunitySchedule(self, user_id, opportunity_id, stime, etime,
         mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
 
@@ -63,3 +71,14 @@ class Controller:
         self.session.flush()
         self.session.commit()
         return picture.id
+
+    def createTag(self, name):
+        tag = Tag(name)
+        self.session.add(tag)
+        self.session.flush()
+        self.session.commit()
+        return tag.id
+
+    def getTags(self):
+        db_tags = self.session.query(Tag).all()
+        return TagSchema(many=True).dump(db_tags)

@@ -1,6 +1,9 @@
 from sqlalchemy import Column, String, Numeric, Integer, Boolean
 from sqlalchemy.orm import relationship
+from .commentLike import CommentLike
 from .entity import Entity, Base
+from .opportunityLike import OpportunityLike
+from .userTag import UserTag
 from marshmallow import Schema, fields
 
 
