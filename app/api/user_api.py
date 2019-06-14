@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..services.user.userService import UserService
+from ..services.user.createUserService import CreateUserService
 from ..libs.exceptions.emailInUseException import EmailInUseException
 
 user_api = Blueprint('user_api',__name__)
@@ -16,10 +16,9 @@ def create_user():
 		'password': password
 	}
 
-	service = UserService()
 	result = {}
 	try:
-		user = service.create(args)
+		user = CreateUserService.call(args)
 		result['success'] = True
 	except EmailInUseException as e:
 		result['error'] = e.message
