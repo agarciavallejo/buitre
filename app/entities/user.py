@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Numeric, Integer, Boolean
 from sqlalchemy.orm import relationship
 from .commentLike import CommentLike
-from .entity import Entity, Base
+from .entity import Entity, Base, session
 from .opportunityLike import OpportunityLike
 from .userTag import UserTag
 from marshmallow import Schema, fields
@@ -25,9 +25,15 @@ class User(Entity, Base):
     comments_created = relationship("Comment", back_populates="created_by")
     comments_liked = relationship("CommentLike", back_populates="user")
 
-    def __init__(self, name, created_by):
-        Entity.__init__(self, created_by)
+    def __init__(self, name, email, password):
         self.name = name
+        self.email = email
+        self.password = password
+
+    def persist(self):
+        session.add(self)
+        session.commit()
+        session.close()
 
 
 class UserSchema(Schema):

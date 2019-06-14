@@ -1,4 +1,5 @@
 from ...lib.exceptions.argumentException import ArgumentException
+from ...entities.user import User
 
 class UserService:
 
@@ -11,4 +12,7 @@ class UserService:
 		if ('password' not in args or args['password'] is None):
 			raise ArgumentException('password')
 
-		return args
+		user = User(args['name'], args['email'], args['password'])
+		user.persist()
+
+		return user 
