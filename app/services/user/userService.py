@@ -24,6 +24,7 @@ class UserService:
 		hashed_password = generate_password_hash(raw_password)
 
 		user = User(name, email, hashed_password)
+		user.is_valid = False
 		user.persist()
 
 		return user 
