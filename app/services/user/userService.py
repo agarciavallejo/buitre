@@ -1,4 +1,3 @@
-from ...lib.exceptions.argumentException import ArgumentException
 from ...entities.user import User
 
 class UserService:
