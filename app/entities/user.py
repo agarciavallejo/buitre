@@ -35,6 +35,11 @@ class User(Entity, Base):
         session.commit()
         session.close()
 
+    @staticmethod
+    def getByEmail(email):
+        user = session.query(User).filter_by(email = email).one_or_none()
+        return user
+
 
 class UserSchema(Schema):
     id = fields.Integer()

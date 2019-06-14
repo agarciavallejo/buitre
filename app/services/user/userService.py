@@ -11,7 +11,14 @@ class UserService:
 		if ('password' not in args or args['password'] is None):
 			raise ArgumentException('password')
 
-		user = User(args['name'], args['email'], args['password'])
+		name = args['name']
+		email = args['email']
+		raw_password = args['password']
+
+		if (User.getByEmail(email) is not None):
+			raise Exception('email already in use')
+
+		user = User(name, email, hashed_password)
 		user.persist()
 
 		return user 
