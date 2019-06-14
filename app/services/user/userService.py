@@ -1,4 +1,7 @@
 from ...entities.user import User
+from ...libs.exceptions.emailInUseException import EmailInUseException
+from ...libs.exceptions.argumentException import ArgumentException
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserService:
 
@@ -16,7 +19,9 @@ class UserService:
 		raw_password = args['password']
 
 		if (User.getByEmail(email) is not None):
-			raise Exception('email already in use')
+			raise EmailInUseException()
+
+		hashed_password = generate_password_hash(raw_password)
 
 		user = User(name, email, hashed_password)
 		user.persist()
