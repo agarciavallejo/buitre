@@ -15,9 +15,9 @@ class LoginUserService:
 
 		user = User.getByEmail(email)
 
-		if(user is None):
-			return None
-		if(not check_password_hash(user.password,password))
-			return None
+		if(user is None or not check_password_hash(user.password,password)):
+			raise AuthenticationException()
+		if(not user.is_valid):
+			raise NoValidUserException()
 
 		return 'this-is-a-session-token'

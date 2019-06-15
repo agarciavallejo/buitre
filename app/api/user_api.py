@@ -2,12 +2,14 @@ from flask import Blueprint, request, jsonify
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
 from ..entities.user import User
-from ..libs.exceptions.emailInUseException import EmailInUseException
+from ..libs.exceptions import EmailInUseException, ArgumentException, AuthenticationException, NoValidUserException
 
 user_api = Blueprint('user_api',__name__)
 
 @user_api.route('/create',methods=['POST'])
 def create_user():
+	response_code = 200
+	result = {}
 	name = request.form.get('name')
 	email = request.form.get('email')
 	password = request.form.get('password')
@@ -18,8 +20,6 @@ def create_user():
 		'password': password
 	}
 
-	response_code = 200
-	result = {}
 	try:
 		CreateUserService.call(args)
 		result['success'] = True
@@ -32,6 +32,8 @@ def create_user():
 
 @user_api.route('/login', methods=['POST'])
 def login_user():
+	response = {}
+	response_code = 200
 	email = request.args['email']
 	password = request.args['password']
 
@@ -40,13 +42,21 @@ def login_user():
 		'password': password
 	}
 
-	token = LoginUser.call(args)
-	if(token is None):
-		result['error'] = 'authentication failed'
-	else:
-		result['token'] = token
-
-	return jsonify(result), 200
+	try:
+		token = LoginUser.call(args)
+		response['token'] = token
+	except ArgumentException as e:
+		response['error'] = e.message
+		response_code = 500
+	except AuthenticationException as e:
+		response['error'] = e.message
+		response_code = 401
+	except NoValidUserException as e:
+		response['error'] = e.message
+	except Exception as e:
+		raise e
+		
+	return jsonify(response), response_code
 
 
 @user_api.route('/<int:id>',methods=['GET'])
