@@ -1,4 +1,4 @@
-from ...libs.exceptions.argumentException import ArgumentException
+from ...libs.exceptions import AuthenticationException, ArgumentException, NoValidUserException
 from werkzeug.security import check_password_hash
 
 class LoginUserService:

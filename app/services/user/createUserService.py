@@ -1,6 +1,5 @@
 from ...entities.user import User
-from ...libs.exceptions.emailInUseException import EmailInUseException
-from ...libs.exceptions.argumentException import ArgumentException
+from ...libs.exceptions import ArgumentException, EmailInUseException
 from werkzeug.security import generate_password_hash
 
 class CreateUserService:
