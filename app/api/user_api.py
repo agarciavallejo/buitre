@@ -23,7 +23,7 @@ def create_user():
 	try:
 		CreateUserService.call(args)
 		result['success'] = True
-	except EmailInUseException as e:
+	except (EmailInUseException, ArgumentException) as e:
 		result['error'] = e.message
 		response_code = 500
 
