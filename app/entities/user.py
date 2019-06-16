@@ -56,4 +56,6 @@ class UserFactory:
 
     @staticmethod
     def create(name, email, password, created_by=None):
-        return User(name, email, password, created_by)
+        user = User(name, email, password, created_by)
+        user.is_valid = False
+        return user

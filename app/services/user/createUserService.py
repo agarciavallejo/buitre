@@ -27,5 +27,4 @@ class CreateUserService:
 		hashed_password = generate_password_hash(raw_password)
 
 		user = self.userFactory.create(name, email, hashed_password)
-		user.is_valid = False
 		user.persist()
