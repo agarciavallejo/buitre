@@ -30,11 +30,6 @@ class User(Entity, Base):
         self.email = email
         self.password = password
 
-    def persist(self):
-        session.add(self)
-        session.commit()
-        session.close()
-
     @staticmethod
     def getByEmail(email):
         user = session.query(User).filter_by(email = email).one_or_none()

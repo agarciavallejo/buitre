@@ -31,3 +31,8 @@ class Entity():
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         self.last_updated_by = created_by
+
+    def persist(self):
+        session.add(self)
+        session.commit()
+        session.close()
