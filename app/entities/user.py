@@ -51,6 +51,10 @@ class UserRepository:
         user = session.query(User).filter_by(email=email).one_or_none()
         return user
 
+    @staticmethod
+    def persist(user):
+        user.persist()
+
 
 class UserFactory:
 
