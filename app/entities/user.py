@@ -25,7 +25,8 @@ class User(Entity, Base):
     comments_created = relationship("Comment", back_populates="created_by")
     comments_liked = relationship("CommentLike", back_populates="user")
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password, created_by=None):
+        super(User, self).__init__(created_by)
         self.name = name
         self.email = email
         self.password = password

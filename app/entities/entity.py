@@ -21,7 +21,8 @@ Base.query = db_session.query_property()
 
 Base.metadata.create_all(engine)
 
-class Entity():
+
+class Entity:
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
