@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
-from ..entities.user import User
 from ..libs.exceptions import EmailInUseException, ArgumentException, AuthenticationException, NoValidUserException
 
 user_api = Blueprint('user_api',__name__)
 
-@user_api.route('/create',methods=['POST'])
+
+@user_api.route('/create', methods=['POST'])
 def create_user():
 	response_code = 200
 	result = {}
@@ -43,7 +43,7 @@ def login_user():
 	}
 
 	try:
-		token = LoginUser.call(args)
+		token = LoginUserService.call(args)
 		response['token'] = token
 	except ArgumentException as e:
 		response['error'] = e.message
