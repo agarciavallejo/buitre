@@ -1,12 +1,14 @@
-from ...entities.user import User
 from ...libs.exceptions import ArgumentException, EmailInUseException
 from werkzeug.security import generate_password_hash
 
 
 class CreateUserService:
 
-	@staticmethod
-	def call(args):
+	def __init__(self, user_repository, user_factory):
+		self.userRepository = user_repository
+		self.userFactory = user_factory
+
+	def call(self, args):
 
 		if 'email' not in args or args['email'] is None:
 			raise ArgumentException('email')
@@ -19,11 +21,11 @@ class CreateUserService:
 		email = args['email']
 		raw_password = args['password']
 
-		if User.getByEmail(email) is not None:
+		if self.userRepository.get_by_email(email) is not None:
 			raise EmailInUseException()
 
 		hashed_password = generate_password_hash(raw_password)
 
-		user = User(name, email, hashed_password)
+		user = self.userFactory.create(name, email, hashed_password)
 		user.is_valid = False
 		user.persist()

@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
 from ..libs.exceptions import EmailInUseException, ArgumentException, AuthenticationException, NoValidUserException
@@ -21,7 +22,10 @@ def create_user():
 	}
 
 	try:
-		CreateUserService.call(args)
+		user_repository = UserRepository
+		user_factory = UserFactory
+		service = CreateUserService(user_repository=user_repository, user_factory=user_factory)
+		service.call(args)
 		result['success'] = True
 	except (EmailInUseException, ArgumentException) as e:
 		result['error'] = e.message

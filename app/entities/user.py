@@ -31,11 +31,6 @@ class User(Entity, Base):
         self.email = email
         self.password = password
 
-    @staticmethod
-    def getByEmail(email):
-        user = session.query(User).filter_by(email = email).one_or_none()
-        return user
-
 
 class UserSchema(Schema):
     id = fields.Integer()
@@ -47,3 +42,18 @@ class UserSchema(Schema):
     radius = fields.Integer()
     is_valid = fields.Boolean()
     score = fields.Integer()
+
+
+class UserRepository:
+
+    @staticmethod
+    def get_by_email(email):
+        user = session.query(User).filter_by(email=email).one_or_none()
+        return user
+
+
+class UserFactory:
+
+    @staticmethod
+    def create(name, email, password, created_by=None):
+        return User(name, email, password, created_by)
