@@ -1,12 +1,12 @@
 from ...libs.exceptions import ArgumentException, EmailInUseException
-from werkzeug.security import generate_password_hash
 
 
 class CreateUserService:
 
-    def __init__(self, user_repository, user_factory):
+    def __init__(self, user_repository, user_factory, password_hasher):
         self.userRepository = user_repository
         self.userFactory = user_factory
+        self.password_hasher = password_hasher
 
     def call(self, args):
 
@@ -24,7 +24,7 @@ class CreateUserService:
         if self.userRepository.get_by_email(email) is not None:
             raise EmailInUseException()
 
-        hashed_password = generate_password_hash(raw_password)
+        hashed_password = self.password_hasher(raw_password)
 
         user = self.userFactory.create(name, email, hashed_password)
         self.userRepository.persist(user)
