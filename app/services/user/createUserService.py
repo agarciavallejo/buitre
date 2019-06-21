@@ -27,4 +27,6 @@ class CreateUserService:
         hashed_password = self.password_hasher(raw_password)
 
         user = self.userFactory.create(name, email, hashed_password)
-        self.userRepository.persist(user)
+        persisted_user = self.userRepository.persist(user)
+
+        return persisted_user
