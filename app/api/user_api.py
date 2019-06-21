@@ -23,11 +23,9 @@ def create_user():
     }
 
     try:
-        user_repository = UserRepository
-        user_factory = UserFactory
         service = CreateUserService(
-            user_repository=user_repository,
-            user_factory=user_factory,
+            user_repository=UserRepository,
+            user_factory=UserFactory,
             password_hasher=generate_password_hash
         )
         service.call(args)
