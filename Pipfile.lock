@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4a8b68978d6ba2b856167bf25a74a73b397f00079536aaa5ade873c36cee93be"
+            "sha256": "7ab86b10dbd0158f502cc242c1fd5c7a28b66362a50cb4781d937be3c7525ec7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -85,11 +85,11 @@
         },
         "graphene-sqlalchemy": {
             "hashes": [
-                "sha256:be567c9f92bbaeccfe9465bfd17132c5bdd4453a27773852b482d61fec143230",
-                "sha256:ce878d740630799f759a04ed2b53b5a8baa2681668180334bf30bc4956206e31"
+                "sha256:6a45943aca04f641797aec3d3a3aa26c4027b7f8ce621c222385dd79ff6e92cf",
+                "sha256:f187dd0157e77cce4c6d3eaf0b949b3f472dcd1da2a7f37f717118946b91a891"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         },
         "graphql-core": {
             "hashes": [
@@ -188,13 +188,6 @@
             ],
             "index": "pypi",
             "version": "==2.18.0"
-        },
-        "mocker": {
-            "hashes": [
-                "sha256:2009911707c74b28bdc9959b5224717e45fcb93475b4b7bb4efad3285fcf2919"
-            ],
-            "index": "pypi",
-            "version": "==1.1.1"
         },
         "more-itertools": {
             "hashes": [
@@ -322,10 +315,10 @@
         },
         "sqlalchemy": {
             "hashes": [
-                "sha256:c7fef198b43ef31dfd783d094fd5ee435ce8717592e6784c45ba337254998017"
+                "sha256:c30925d60af95443458ebd7525daf791f55762b106049ae71e18f8dd58084c2f"
             ],
             "index": "pypi",
-            "version": "==1.3.4"
+            "version": "==1.3.5"
         },
         "wcwidth": {
             "hashes": [
