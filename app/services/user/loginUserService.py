@@ -1,12 +1,11 @@
 from ...libs.exceptions import AuthenticationException, ArgumentException, NoValidUserException
-from werkzeug.security import check_password_hash
 
 
 class LoginUserService:
 
-    def __init__(self, user_repository, token_generator, hash_checker_func):
+    def __init__(self, user_repository, token_generator_func, hash_checker_func):
         self.user_repository = user_repository
-        self.token_generator = token_generator
+        self.token_generator_func = token_generator_func
         self.hash_checker_func = hash_checker_func
 
     def call(self, args):
@@ -25,4 +24,4 @@ class LoginUserService:
         if not user.is_valid:
             raise NoValidUserException()
 
-        return 'this-is-a-session-token'
+        return self.token_generator_func()

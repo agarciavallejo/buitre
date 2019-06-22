@@ -41,3 +41,23 @@ def test_wrong_password():
 
         service = LoginUserService(fakeRepo, None, password_hasher_func)
         service.call({'email': "andre@buitre.com", 'password': "unhashed_password"})
+
+
+def test_login_token():
+    class fakeRepo:
+        @staticmethod
+        def get_by_email(email):
+            user = User
+            user.password = 'hashed_password'
+            user.is_valid = True
+            return user
+
+    def password_hasher_func(hashed_password, password):
+        return True
+
+    def token_generator_func():
+        return "this-is-a-token"
+
+    service = LoginUserService(fakeRepo, token_generator_func, password_hasher_func)
+    token = service.call({'email': "andre@buitre.com", 'password': "unhashed_password"})
+    assert token == 'this-is-a-token'
