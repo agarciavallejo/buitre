@@ -2,7 +2,13 @@ from flask import Blueprint, request, jsonify
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
-from ..libs.exceptions import EmailInUseException, ArgumentException, AuthenticationException, NoValidUserException
+from ..services.user.ValidateUserService import ValidateUserService
+from ..libs.exceptions import \
+    EmailInUseException, \
+    ArgumentException, \
+    AuthenticationException, \
+    NoValidUserException, \
+    UserValidationException
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
@@ -35,6 +41,30 @@ def create_user():
         response_code = 500
 
     return jsonify(result), response_code
+
+
+@user_api.route('/validate', methods=['GET'])
+def validate_user():
+    response_code = 200
+    response = {}
+    user_id = request.args.get('id')
+
+    args = {
+        'id': user_id
+    }
+
+    service = ValidateUserService(
+        user_repository=UserRepository
+    )
+
+    try:
+        service.call(args)
+        response['success'] = True
+    except UserValidationException as e:
+        response['error'] = e.message
+        response_code = 500
+
+    return jsonify(response), response_code
 
 
 @user_api.route('/login', methods=['POST'])
