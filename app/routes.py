@@ -13,7 +13,7 @@ app.debug = True
 c = Controller(session)
 
 app.json_encoder = BuitreEncoder
-app.register_blueprint(user_api,url_prefix='/api/user')
+app.register_blueprint(user_api, url_prefix='/api/user')
 
 # create test user
 initial_users = session.query(User).all()
