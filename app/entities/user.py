@@ -52,6 +52,18 @@ class UserRepository:
         return user
 
     @staticmethod
+    def get_by_id(id):
+        user = session.query(User).filter_by(id=id).first()
+        return user
+
+    @staticmethod
+    def validate(id):
+        user = UserRepository.get_by_id(id)
+        user.is_valid = True
+        UserRepository.persist(user)
+        return user
+
+    @staticmethod
     def persist(user):
         user.persist()
 
