@@ -79,10 +79,13 @@ def login_user():
         'password': password
     }
 
+    def dummy_token_generator():
+        return "this-is-a-dummy-token"
+
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator=None,
+            token_generator_func=dummy_token_generator,
             hash_checker_func=check_password_hash
         )
         token = service.call(args)
