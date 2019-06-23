@@ -29,3 +29,15 @@ class UserValidationException(Exception):
     def __init__(self, message):
         super().__init__(message)
         self.message = message
+
+
+class ExpiredTokenException(Exception):
+    def __init__(self):
+        message = 'token is expired'
+        super().__init__(message)
+
+
+class InvalidTokenException(Exception):
+    def __init__(self):
+        message = 'invalid token'
+        super().__init__(message)
