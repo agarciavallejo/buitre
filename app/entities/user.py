@@ -18,6 +18,7 @@ class User(Entity, Base):
     radius = Column("radius", Integer)
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
+    session_token = Column('session_token', String)
 
     tags = relationship("UserTag", back_populates="user")
     opportunities_created = relationship("Opportunity", back_populates="created_by")
@@ -45,6 +46,7 @@ class UserSchema(Schema):
     radius = fields.Integer()
     is_valid = fields.Boolean()
     score = fields.Integer()
+    session_token = fields.Str()
 
 
 class UserRepository:

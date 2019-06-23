@@ -24,8 +24,8 @@ class LoginUserService:
         if not user.has_been_validated():
             raise NoValidUserException()
 
-        login_token = self.token_generator.generate_login_token({'data': user.id})
-        user.login_token = login_token
+        session_token = self.token_generator.generate_session_token({'data': user.id})
+        user.session_token = session_token
         self.user_repository.persist(user)
 
-        return login_token
+        return session_token

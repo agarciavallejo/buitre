@@ -6,9 +6,9 @@ see: https://alembic.sqlalchemy.org/en/latest/tutorial.html#create-a-migration-s
 
 to create an alembic migration:
 
-`$ alembic revision -m "<descriptive message>"`
+`$ [pipenv run] alembic revision -m "<descriptive message>"`
 
 a file will be created with an identifier hash and the message. Use the `upgrade()` and `downgrade()`
 methods to do and undo the changes. Then run this command to apply the migration:
 
-`$ alembic upgrade head`
+`$ [pipenv run] alembic upgrade head`

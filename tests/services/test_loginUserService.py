@@ -60,7 +60,7 @@ def test_login_token():
 
     class fakeTokenManager:
         @staticmethod
-        def generate_login_token(anything):
+        def generate_session_token(anything):
             return "this-is-a-token"
 
     service = LoginUserService(fakeRepo, fakeTokenManager, password_hasher_func)
