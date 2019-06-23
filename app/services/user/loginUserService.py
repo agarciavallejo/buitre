@@ -3,9 +3,9 @@ from ...libs.exceptions import AuthenticationException, ArgumentException, NoVal
 
 class LoginUserService:
 
-    def __init__(self, user_repository, token_generator_func, hash_checker_func):
+    def __init__(self, user_repository, token_generator, hash_checker_func):
         self.user_repository = user_repository
-        self.token_generator_func = token_generator_func
+        self.token_generator = token_generator
         self.hash_checker_func = hash_checker_func
 
     def call(self, args):
@@ -21,7 +21,11 @@ class LoginUserService:
 
         if user is None or not self.hash_checker_func(user.password, password):
             raise AuthenticationException()
-        if not user.is_valid:
+        if not user.has_been_validated():
             raise NoValidUserException()
 
-        return self.token_generator_func()
+        login_token = self.token_generator.generate_login_token({'data': user.id})
+        user.login_token = login_token
+        self.user_repository.persist(user)
+
+        return login_token

@@ -9,6 +9,7 @@ from ..libs.exceptions import \
     AuthenticationException, \
     NoValidUserException, \
     UserValidationException
+from ..libs.utils import TokenManager
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
@@ -47,7 +48,7 @@ def create_user():
 def validate_user():
     response_code = 200
     response = {}
-    user_id = request.args.get('id')
+    user_id = request.args.get('id')  # this should be replaced with the validation token when implemented
 
     args = {
         'id': user_id
@@ -79,13 +80,15 @@ def login_user():
         'password': password
     }
 
-    def dummy_token_generator():
-        return "this-is-a-dummy-token"
+    class fakeTokenManager:
+        @staticmethod
+        def generate_login_token():
+            return "this-is-a-dummy-token"
 
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator_func=dummy_token_generator,
+            token_generator_func=fakeTokenManager,
             hash_checker_func=check_password_hash
         )
         token = service.call(args)

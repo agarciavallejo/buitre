@@ -47,17 +47,22 @@ def test_login_token():
     class fakeRepo:
         @staticmethod
         def get_by_email(email):
-            user = User
+            user = User('test', 'test@test.com', 'test123')
             user.password = 'hashed_password'
             user.is_valid = True
+            return user
+        @staticmethod
+        def persist(user):
             return user
 
     def password_hasher_func(hashed_password, password):
         return True
 
-    def token_generator_func():
-        return "this-is-a-token"
+    class fakeTokenManager:
+        @staticmethod
+        def generate_login_token(anything):
+            return "this-is-a-token"
 
-    service = LoginUserService(fakeRepo, token_generator_func, password_hasher_func)
+    service = LoginUserService(fakeRepo, fakeTokenManager, password_hasher_func)
     token = service.call({'email': "andre@buitre.com", 'password': "unhashed_password"})
     assert token == 'this-is-a-token'

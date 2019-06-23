@@ -31,6 +31,9 @@ class User(Entity, Base):
         self.email = email
         self.password = password
 
+    def has_been_validated(self):
+        return self.is_valid
+
 
 class UserSchema(Schema):
     id = fields.Integer()
