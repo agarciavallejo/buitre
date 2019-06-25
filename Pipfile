@@ -23,6 +23,7 @@ graphene = "*"
 graphene-sqlalchemy = "*"
 flask-graphql = "*"
 pytest = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.6"
