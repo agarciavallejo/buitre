@@ -21,7 +21,8 @@ Base.query = db_session.query_property()
 
 Base.metadata.create_all(engine)
 
-class Entity():
+
+class Entity:
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
@@ -31,3 +32,8 @@ class Entity():
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         self.last_updated_by = created_by
+
+    def persist(self):
+        session.add(self)
+        session.commit()
+        session.close()

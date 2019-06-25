@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Numeric, Integer, Boolean
 from sqlalchemy.orm import relationship
 from .commentLike import CommentLike
-from .entity import Entity, Base
+from .entity import Entity, Base, session
 from .opportunityLike import OpportunityLike
 from .userTag import UserTag
 from marshmallow import Schema, fields
@@ -18,6 +18,7 @@ class User(Entity, Base):
     radius = Column("radius", Integer)
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
+    session_token = Column('session_token', String)
 
     tags = relationship("UserTag", back_populates="user")
     opportunities_created = relationship("Opportunity", back_populates="created_by")
@@ -25,9 +26,14 @@ class User(Entity, Base):
     comments_created = relationship("Comment", back_populates="created_by")
     comments_liked = relationship("CommentLike", back_populates="user")
 
-    def __init__(self, name, created_by):
-        Entity.__init__(self, created_by)
+    def __init__(self, name, email, password, created_by=None):
+        super(User, self).__init__(created_by)
         self.name = name
+        self.email = email
+        self.password = password
+
+    def has_been_validated(self):
+        return self.is_valid
 
 
 class UserSchema(Schema):
@@ -40,3 +46,37 @@ class UserSchema(Schema):
     radius = fields.Integer()
     is_valid = fields.Boolean()
     score = fields.Integer()
+    session_token = fields.Str()
+
+
+class UserRepository:
+
+    @staticmethod
+    def get_by_email(email):
+        user = session.query(User).filter_by(email=email).first()
+        return user
+
+    @staticmethod
+    def get_by_id(id):
+        user = session.query(User).filter_by(id=id).first()
+        return user
+
+    @staticmethod
+    def validate(id):
+        user = UserRepository.get_by_id(id)
+        user.is_valid = True
+        UserRepository.persist(user)
+        return user
+
+    @staticmethod
+    def persist(user):
+        user.persist()
+
+
+class UserFactory:
+
+    @staticmethod
+    def create(name, email, password, created_by=None):
+        user = User(name, email, password, created_by)
+        user.is_valid = False
+        return user
