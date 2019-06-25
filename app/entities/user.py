@@ -72,6 +72,13 @@ class UserRepository:
     def persist(user):
         user.persist()
 
+    @staticmethod
+    def delete(id):
+        user = UserRepository.get_by_id(id)
+        session.delete(user)
+        session.commit()
+        return True
+
 
 class UserFactory:
 
