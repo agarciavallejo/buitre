@@ -107,6 +107,12 @@ def login_user():
     return jsonify(response), response_code
 
 
-@user_api.route('/<int:id>', methods=['GET'])
+@user_api.route('/delete/<int:id>', methods=['GET'])
 def get_user(id):
-    return "this will be a user"
+    response = {}
+    response_code = 200
+
+    UserRepository.delete(id)
+    response['success'] = True
+
+    return jsonify(response), response_code
