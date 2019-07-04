@@ -8,3 +8,9 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LOGIN_TOKEN_EXPIRATION = 86400  # 1 day
     VALIDATION_TOKEN_EXPIRATION = 604800  # 1 week
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = 'testbuitre@gmail.com',
+    MAIL_PASSWORD = 'testbuitre123'
+

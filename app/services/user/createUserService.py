@@ -1,4 +1,5 @@
 from ...libs.exceptions import ArgumentException, EmailInUseException
+from ...libs.email import EmailFactory, EmailSender
 
 
 class CreateUserService:
@@ -25,8 +26,13 @@ class CreateUserService:
             raise EmailInUseException()
 
         hashed_password = self.password_hasher(raw_password)
-
         user = self.userFactory.create(name, email, hashed_password)
-        persisted_user = self.userRepository.persist(user)
+
+        self.userRepository.persist(user)
+        persisted_user = self.userRepository.get_by_email(email)
+
+        print(persisted_user)
+        validation_email = EmailFactory.create_user_validation_email(user.name, user.email, persisted_user.id)
+        EmailSender.send(validation_email)
 
         return persisted_user

@@ -80,15 +80,10 @@ def login_user():
         'password': password
     }
 
-    class fakeTokenManager:
-        @staticmethod
-        def generate_login_token():
-            return "this-is-a-dummy-token"
-
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator_func=fakeTokenManager,
+            token_generator=TokenManager,
             hash_checker_func=check_password_hash
         )
         token = service.call(args)
