@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+import os
 
 
 # this is the Alembic Config object, which provides
@@ -40,7 +41,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = config.get_main_option("sqlalchemy.url", os.environ.get('DATABASE_URL'))
     context.configure(
         url=url, target_metadata=target_metadata, literal_binds=True
     )
