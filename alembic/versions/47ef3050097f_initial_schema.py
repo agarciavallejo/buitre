@@ -61,6 +61,7 @@ def upgrade():
     op.create_table(
         'Comment',
         sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('text', sa.Text),
         sa.Column('created_at', sa.DateTime),
         sa.Column('updated_at', sa.DateTime),
         sa.Column('last_updated_by', sa.String(16)),
@@ -136,7 +137,7 @@ def upgrade():
         sa.Column('updated_at', sa.DateTime),
         sa.Column('last_updated_by', sa.String(16)),
         sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False),
-                sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
+        sa.Column("user_id", sa.Integer, sa.ForeignKey('User.id'), nullable=False)
     )
 
 
