@@ -18,7 +18,7 @@ app.register_blueprint(user_api, url_prefix='/api/user')
 # create test user
 initial_users = session.query(User).all()
 if len(initial_users) == 0:
-    test_user = User("test2", "script")
+    test_user = User("test2", "script", "123")
     test_user.is_valid = True
     session.add(test_user)
     session.commit()
