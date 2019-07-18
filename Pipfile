@@ -24,6 +24,7 @@ graphene-sqlalchemy = "*"
 flask-graphql = "*"
 pytest = "*"
 flask-mail = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
