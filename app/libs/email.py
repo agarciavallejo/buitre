@@ -19,7 +19,7 @@ class EmailFactory:
         subject = 'BUITRE | Validate your user account'
         body = 'Hello ' + user_name + ',<br>welcome to BUITRES. Please follow the link below to ' \
                                       'complete your registration:<br><a href="' + url_for('user_api.validate_user',
-                                                                                           id=validation_token) + '"> here</a>'
+                                                                                           id=validation_token, _external=True) + '"> here</a>'
 
         email = Email(subject, body, [user_email], 'noreply@buitre.com')
         return email
