@@ -19,6 +19,7 @@ class User(Entity, Base):
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
     session_token = Column('session_token', String)
+    validation_token = Column('validation_token', String)
 
     tags = relationship("UserTag", back_populates="user")
     opportunities_created = relationship("Opportunity", back_populates="created_by")
@@ -47,6 +48,7 @@ class UserSchema(Schema):
     is_valid = fields.Boolean()
     score = fields.Integer()
     session_token = fields.Str()
+    validation_token = fields.Str()
 
 
 class UserRepository:

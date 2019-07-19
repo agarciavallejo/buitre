@@ -33,7 +33,8 @@ def create_user():
         service = CreateUserService(
             user_repository=UserRepository,
             user_factory=UserFactory,
-            password_hasher=generate_password_hash
+            password_hasher=generate_password_hash,
+            validation_token_generator=TokenManager.generate_validation_token
         )
         service.call(args)
         result['success'] = True

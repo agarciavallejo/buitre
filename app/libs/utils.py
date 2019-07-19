@@ -21,3 +21,11 @@ class TokenManager:
             raise InvalidTokenException
 
         return data
+
+    @staticmethod
+    def generate_validation_token():
+        return "validation_token"
+
+    @staticmethod
+    def verify_validation_token(validation_token):
+        return True
