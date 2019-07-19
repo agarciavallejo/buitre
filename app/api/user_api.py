@@ -49,14 +49,15 @@ def create_user():
 def validate_user():
     response_code = 200
     response = {}
-    user_id = request.args.get('id')  # this should be replaced with the validation token when implemented
+    validation_token = request.args.get('validation_token')  # this should be replaced with the validation token when implemented
 
     args = {
-        'id': user_id
+        'validation_token': validation_token
     }
 
     service = ValidateUserService(
-        user_repository=UserRepository
+        user_repository=UserRepository,
+        validation_token_verifier=TokenManager.verify_validation_token
     )
 
     try:

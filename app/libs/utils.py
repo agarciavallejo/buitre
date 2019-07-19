@@ -24,8 +24,17 @@ class TokenManager:
 
     @staticmethod
     def generate_validation_token():
-        return "validation_token"
+        s = TimedSerializer(app.config['SECRET_KEY'])
+        return s.dumps(None)
 
     @staticmethod
-    def verify_validation_token(validation_token):
-        return True
+    def verify_validation_token(token):
+        s = TimedSerializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token, max_age=app.config['VALIDATION_TOKEN_EXPIRATION'])
+        except SignatureExpired:
+            raise ExpiredTokenException
+        except BadTimeSignature:
+            raise InvalidTokenException
+
+        return data
