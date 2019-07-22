@@ -23,7 +23,6 @@ graphene = "*"
 graphene-sqlalchemy = "*"
 flask-graphql = "*"
 pytest = "*"
-flask-mail = "*"
 requests = "*"
 
 [requires]
