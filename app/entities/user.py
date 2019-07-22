@@ -5,7 +5,6 @@ from .entity import Entity, Base, session
 from .opportunityLike import OpportunityLike
 from .userTag import UserTag
 from marshmallow import Schema, fields
-from ..libs.utils import TokenManager
 
 class User(Entity, Base):
     __tablename__ = 'User'
@@ -64,11 +63,6 @@ class UserRepository:
     @staticmethod
     def get_by_id(id):
         user = session.query(User).filter_by(id=id).first()
-        return user
-
-    @staticmethod
-    def get_by_validation_token(validation_token):
-        user = session.query(User).filter_by(validation_token=validation_token).first()
         return user
 
     @staticmethod
