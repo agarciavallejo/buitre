@@ -1,12 +1,14 @@
 from ...libs.exceptions import ArgumentException, EmailInUseException
+from ...libs.email import EmailFactory, EmailSender
 
 
 class CreateUserService:
 
-    def __init__(self, user_repository, user_factory, password_hasher):
+    def __init__(self, user_repository, user_factory, password_hasher, validation_token_generator):
         self.userRepository = user_repository
         self.userFactory = user_factory
-        self.password_hasher = password_hasher
+        self.hash_password = password_hasher
+        self.generate_validation_token = validation_token_generator
 
     def call(self, args):
 
@@ -24,9 +26,15 @@ class CreateUserService:
         if self.userRepository.get_by_email(email) is not None:
             raise EmailInUseException()
 
-        hashed_password = self.password_hasher(raw_password)
-
+        hashed_password = self.hash_password(raw_password)
         user = self.userFactory.create(name, email, hashed_password)
-        persisted_user = self.userRepository.persist(user)
+        validation_token = self.generate_validation_token(email)
+        user.validation_token = validation_token
+
+        self.userRepository.persist(user)
+        persisted_user = self.userRepository.get_by_email(email)
+
+        validation_email = EmailFactory.create_user_validation_email(user.name, user.email, validation_token)
+        EmailSender.send(validation_email)
 
         return persisted_user

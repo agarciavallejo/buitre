@@ -6,7 +6,6 @@ from .opportunityLike import OpportunityLike
 from .userTag import UserTag
 from marshmallow import Schema, fields
 
-
 class User(Entity, Base):
     __tablename__ = 'User'
 
@@ -19,6 +18,7 @@ class User(Entity, Base):
     is_valid = Column("is_valid", Boolean)
     score = Column("score", Integer)
     session_token = Column('session_token', String)
+    validation_token = Column('validation_token', String)
 
     tags = relationship("UserTag", back_populates="user")
     opportunities_created = relationship("Opportunity", back_populates="created_by")
@@ -35,6 +35,9 @@ class User(Entity, Base):
     def has_been_validated(self):
         return self.is_valid
 
+    def validate(self):
+        self.is_valid = True
+
 
 class UserSchema(Schema):
     id = fields.Integer()
@@ -47,6 +50,7 @@ class UserSchema(Schema):
     is_valid = fields.Boolean()
     score = fields.Integer()
     session_token = fields.Str()
+    validation_token = fields.Str()
 
 
 class UserRepository:
@@ -62,15 +66,15 @@ class UserRepository:
         return user
 
     @staticmethod
-    def validate(id):
-        user = UserRepository.get_by_id(id)
-        user.is_valid = True
-        UserRepository.persist(user)
-        return user
-
-    @staticmethod
     def persist(user):
         user.persist()
+
+    @staticmethod
+    def delete(id):
+        user = UserRepository.get_by_id(id)
+        session.delete(user)
+        session.commit()
+        return True
 
 
 class UserFactory:

@@ -36,4 +36,3 @@ class Entity:
     def persist(self):
         session.add(self)
         session.commit()
-        session.close()

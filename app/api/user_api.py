@@ -33,7 +33,8 @@ def create_user():
         service = CreateUserService(
             user_repository=UserRepository,
             user_factory=UserFactory,
-            password_hasher=generate_password_hash
+            password_hasher=generate_password_hash,
+            validation_token_generator=TokenManager.generate_validation_token
         )
         service.call(args)
         result['success'] = True
@@ -48,14 +49,15 @@ def create_user():
 def validate_user():
     response_code = 200
     response = {}
-    user_id = request.args.get('id')  # this should be replaced with the validation token when implemented
+    validation_token = request.args.get('validation_token')
 
     args = {
-        'id': user_id
+        'validation_token': validation_token
     }
 
     service = ValidateUserService(
-        user_repository=UserRepository
+        user_repository=UserRepository,
+        validation_token_verifier=TokenManager.verify_validation_token
     )
 
     try:
@@ -80,15 +82,10 @@ def login_user():
         'password': password
     }
 
-    class fakeTokenManager:
-        @staticmethod
-        def generate_login_token():
-            return "this-is-a-dummy-token"
-
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator_func=fakeTokenManager,
+            token_generator=TokenManager,
             hash_checker_func=check_password_hash
         )
         token = service.call(args)
@@ -107,6 +104,12 @@ def login_user():
     return jsonify(response), response_code
 
 
-@user_api.route('/<int:id>', methods=['GET'])
+@user_api.route('/delete/<int:id>', methods=['GET'])
 def get_user(id):
-    return "this will be a user"
+    response = {}
+    response_code = 200
+
+    UserRepository.delete(id)
+    response['success'] = True
+
+    return jsonify(response), response_code
