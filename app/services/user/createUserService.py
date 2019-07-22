@@ -28,12 +28,13 @@ class CreateUserService:
 
         hashed_password = self.hash_password(raw_password)
         user = self.userFactory.create(name, email, hashed_password)
-        user.validation_token = self.generate_validation_token()
+        validation_token = self.generate_validation_token(email)
+        user.validation_token = validation_token
 
         self.userRepository.persist(user)
         persisted_user = self.userRepository.get_by_email(email)
 
-        validation_email = EmailFactory.create_user_validation_email(user.name, user.email, persisted_user.id)
+        validation_email = EmailFactory.create_user_validation_email(user.name, user.email, validation_token)
         EmailSender.send(validation_email)
 
         return persisted_user

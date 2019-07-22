@@ -49,7 +49,7 @@ def create_user():
 def validate_user():
     response_code = 200
     response = {}
-    validation_token = request.args.get('validation_token')  # this should be replaced with the validation token when implemented
+    validation_token = request.args.get('validation_token')
 
     args = {
         'validation_token': validation_token

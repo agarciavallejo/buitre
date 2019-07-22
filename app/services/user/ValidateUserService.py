@@ -1,4 +1,4 @@
-from ...libs.exceptions import ArgumentException, UserValidationException
+from ...libs.exceptions import ArgumentException, UserValidationException, ExpiredTokenException, InvalidTokenException
 
 
 class ValidateUserService:
@@ -13,15 +13,19 @@ class ValidateUserService:
 
         validation_token = args['validation_token']
 
-        user = self.user_repository.get_by_validation_token(validation_token)
+        try:
+            user_email = self.verify_validation_token(validation_token)
+        except ExpiredTokenException:
+            raise UserValidationException('token expired')
+        except InvalidTokenException:
+            raise UserValidationException('invalid_token')
+
+        user = self.user_repository.get_by_email(user_email)
 
         if user is None:
             raise UserValidationException('user not found')
 
-        if self.verify_validation_token(validation_token):
-            user.validate()
-        else:
-            raise UserValidationException('token expired')
+        user.validate()
 
         self.user_repository.persist(user)
 
