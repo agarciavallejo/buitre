@@ -18,7 +18,7 @@ class ValidateUserService:
         except ExpiredTokenException:
             raise UserValidationException('token expired')
         except InvalidTokenException:
-            raise UserValidationException('invalid_token')
+            raise UserValidationException('invalid token')
 
         user = self.user_repository.get_by_email(user_email)
 
