@@ -19,6 +19,7 @@ def test_unexisting_user():
             @staticmethod
             def get_by_id(id):
                 None
+
         service = ValidateUserService(
             user_repository=fakeRepo
         )
@@ -31,6 +32,7 @@ def test_user_is_validated():
         @staticmethod
         def get_by_id(id):
             return "Not none"
+
         @staticmethod
         def validate(id):
             user = User("andreu", "aramos@buitre.com", "123")

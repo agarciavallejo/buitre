@@ -37,15 +37,18 @@ def test_password_is_hashed():
         @staticmethod
         def get_by_email(email):
             return None
+
         @staticmethod
         def persist(user):
             return user
+
     class fakeFactory:
         @staticmethod
-        def create(name,email,password):
-            return {'name':name, 'email':email, 'password':password}
+        def create(name, email, password):
+            return {'name': name, 'email': email, 'password': password}
+
     def dummyHash(password):
-        return 'hashed'+password
+        return 'hashed' + password
 
     service = CreateUserService(
         user_repository=fakeRepo,
@@ -55,4 +58,3 @@ def test_password_is_hashed():
     result = service.call({'name': "Andreu", 'email': "aramos@buitre.com", 'password': "pass123"})
 
     assert result['password'] == 'hashedpass123'
-
