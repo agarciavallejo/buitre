@@ -63,13 +63,9 @@ def test_already_existing_email_check():
 
 def test_password_is_hashed():
     class fakeRepo:
-        first_time = True
         @staticmethod
         def get_by_email(email):
-            if fakeRepo.first_time:
-                fakeRepo.first_time = False
-                return None
-            return
+            return None
 
         @staticmethod
         def persist(user):
