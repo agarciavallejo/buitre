@@ -35,4 +35,6 @@ class Entity:
 
     def persist(self):
         session.add(self)
+        session.flush()
         session.commit()
+        return self
