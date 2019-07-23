@@ -1,5 +1,5 @@
-from ...libs.exceptions import ArgumentException, EmailInUseException
-from ...libs.email import EmailFactory, EmailSender
+from ...utils.exceptions import ArgumentException, EmailInUseException
+from ...utils.email import EmailFactory, EmailSender
 
 
 class CreateUserService:

@@ -1,5 +1,5 @@
 import pytest
-from ...app.libs.exceptions import ArgumentException, AuthenticationException
+from ...app.utils.exceptions import ArgumentException, AuthenticationException
 from ...app.services.user.loginUserService import LoginUserService
 from ...app.entities.user import User
 

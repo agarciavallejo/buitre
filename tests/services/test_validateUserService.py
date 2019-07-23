@@ -1,6 +1,6 @@
 import pytest
-from ...app.libs.exceptions import ArgumentException, UserValidationException
-from ...app.services.user.ValidateUserService import ValidateUserService
+from ...app.utils.exceptions import ArgumentException, UserValidationException
+from ...app.services.user.validateUserService import ValidateUserService
 from ...app.entities.user import User
 
 

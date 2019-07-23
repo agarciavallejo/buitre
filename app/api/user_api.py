@@ -2,14 +2,14 @@ from flask import Blueprint, request, jsonify
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
-from ..services.user.ValidateUserService import ValidateUserService
-from ..libs.exceptions import \
+from ..services.user.validateUserService import ValidateUserService
+from ..utils.exceptions import \
     EmailInUseException, \
     ArgumentException, \
     AuthenticationException, \
     NoValidUserException, \
     UserValidationException
-from ..libs.utils import TokenManager
+from ..utils.tokenManager import TokenManager
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
