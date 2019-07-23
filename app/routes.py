@@ -4,7 +4,7 @@ from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base, session
 from .controller import Controller
-from .utils import BuitreEncoder
+from .utils.customEncoder import CustomEncoder
 from .ql import qlschema, GraphQLView
 from .api.user_api import user_api
 
@@ -12,7 +12,7 @@ app.debug = True
 
 c = Controller(session)
 
-app.json_encoder = BuitreEncoder
+app.json_encoder = CustomEncoder
 app.register_blueprint(user_api, url_prefix='/api/user')
 
 # create test user

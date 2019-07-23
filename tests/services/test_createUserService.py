@@ -1,6 +1,6 @@
 import pytest
 from ...app.services.user.createUserService import CreateUserService
-from ...app.libs.exceptions import ArgumentException, EmailInUseException
+from ...app.utils.exceptions import ArgumentException, EmailInUseException
 
 
 def test_emailless_call_raises_exception():

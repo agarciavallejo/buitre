@@ -1,4 +1,4 @@
-from ...libs.exceptions import ArgumentException, UserValidationException, ExpiredTokenException, InvalidTokenException
+from ...utils.exceptions import ArgumentException, UserValidationException, ExpiredTokenException, InvalidTokenException
 
 
 class ValidateUserService:

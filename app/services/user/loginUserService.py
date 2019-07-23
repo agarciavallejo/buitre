@@ -1,4 +1,4 @@
-from ...libs.exceptions import AuthenticationException, ArgumentException, NoValidUserException
+from ...utils.exceptions import AuthenticationException, ArgumentException, NoValidUserException
 
 
 class LoginUserService:

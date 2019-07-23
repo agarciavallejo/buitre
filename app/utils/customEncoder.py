@@ -1,7 +1,8 @@
 import decimal
 import flask.json
 
-class BuitreEncoder(flask.json.JSONEncoder):
+
+class CustomEncoder(flask.json.JSONEncoder):
 
     def default(self, obj):
         if isinstance(obj, decimal.Decimal):
