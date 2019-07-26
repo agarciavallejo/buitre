@@ -85,7 +85,7 @@ def login_user():
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator=TokenManager,
+            token_generator=TokenManager.generate_session_token,
             hash_checker_func=check_password_hash
         )
         token = service.call(args)
