@@ -8,4 +8,4 @@ class CustomEncoder(flask.json.JSONEncoder):
         if isinstance(obj, decimal.Decimal):
             # Convert decimal instances to strings.
             return str(obj)
-        return super(MyJSONEncoder, self).default(obj)
+        return super(CustomEncoder, self).default(obj)
