@@ -21,7 +21,7 @@ class SendUserRecoveryService:
 
         recovery_token = self.generate_token(email)
 
-        email = self.email_factory.create_recovery_email(user.name, user.email, recovery_token)
+        email = self.email_factory.create_user_recovery_email(user.name, user.email, recovery_token)
         self.email_sender.send(email)
 
         return True

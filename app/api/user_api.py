@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+
+from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
@@ -10,6 +12,7 @@ from ..utils.exceptions import \
     NoValidUserException, \
     UserValidationException
 from ..utils.tokenManager import TokenManager
+from ..utils.email import EmailFactory, EmailSender
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
@@ -102,6 +105,39 @@ def login_user():
         raise e
 
     return jsonify(response), response_code
+
+
+@user_api.route('/send_recovery', methods=['POST'])
+def send_user_recovery():
+    response_code = 200
+    response = {}
+    email = request.form.get('email')
+
+    args = {
+        'email': email
+    }
+
+    try:
+        service = SendUserRecoveryService(
+            user_repository=UserRepository,
+            email_factory=EmailFactory,
+            email_sender=EmailSender,
+            token_generator=TokenManager.generate_validation_token
+        )
+        service.call(args)
+    except ArgumentException as e:
+        response_code = 500
+        response['error'] = e.message
+    except AuthenticationException as e:
+        response_code = 500
+        response['error'] = "User does not exist"
+
+    return jsonify(response), response_code
+
+
+@user_api.route('/recover', methods=['GET'])
+def recover_user():
+    pass
 
 
 @user_api.route('/delete/<int:id>', methods=['GET'])
