@@ -28,7 +28,7 @@ class RecoverUserService:
         user = self.user_repository.get_by_email(user_email)
 
         if user is None:
-            raise AuthenticationException()
+            raise InvalidTokenException()
 
         user.password = self.hash_password(password)
         self.user_repository.persist(user)

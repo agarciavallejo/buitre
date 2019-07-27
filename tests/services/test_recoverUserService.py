@@ -1,8 +1,7 @@
 import pytest
 
 from ...app.entities.user import User
-from ...app.utils.exceptions import ArgumentException, InvalidTokenException, ExpiredTokenException, \
-    AuthenticationException
+from ...app.utils.exceptions import ArgumentException, InvalidTokenException, ExpiredTokenException
 from ...app.services.user.recoverUserService import RecoverUserService
 
 
@@ -53,7 +52,7 @@ def test_invalid_token():
 
 
 def test_unexisting_user():
-    with pytest.raises(AuthenticationException):
+    with pytest.raises(InvalidTokenException):
         class fakeRepo:
             @staticmethod
             def get_by_email(email):

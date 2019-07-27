@@ -1,16 +1,17 @@
 from flask import Blueprint, request, jsonify
 
-from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
 from ..services.user.validateUserService import ValidateUserService
+from ..services.user.recoverUserService import RecoverUserService
+from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..utils.exceptions import \
     EmailInUseException, \
     ArgumentException, \
     AuthenticationException, \
     NoValidUserException, \
-    UserValidationException
+    UserValidationException, ExpiredTokenException, InvalidTokenException
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -137,7 +138,33 @@ def send_user_recovery():
 
 @user_api.route('/recover', methods=['GET'])
 def recover_user():
-    pass
+    response_code = 200
+    response = {}
+
+    recovery_token = request.args.get('recovery_token')
+    new_password = request.args.get('password')
+
+    args = {
+        'recovery_token': recovery_token,
+        'password': new_password
+    }
+
+    try:
+        service = RecoverUserService(
+            token_verifier=TokenManager.verify_validation_token,
+            user_repository=UserRepository,
+            password_hasher=generate_password_hash
+        )
+        service.call(args)
+        response['success'] = True
+    except ExpiredTokenException:
+        response['error'] = "Expired token"
+        response_code = 500
+    except InvalidTokenException:
+        response['error'] = "Invalid token"
+        response_code = 500
+
+    return jsonify(response), response_code
 
 
 @user_api.route('/delete/<int:id>', methods=['GET'])
