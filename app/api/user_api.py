@@ -9,6 +9,7 @@ from ..utils.exceptions import \
     AuthenticationException, \
     NoValidUserException, \
     UserValidationException
+from ..utils.email import EmailFactory, EmailSender
 from ..utils.tokenManager import TokenManager
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -34,7 +35,9 @@ def create_user():
             user_repository=UserRepository,
             user_factory=UserFactory,
             password_hasher=generate_password_hash,
-            validation_token_generator=TokenManager.generate_validation_token
+            validation_token_generator=TokenManager.generate_validation_token,
+            email_factory=EmailFactory,
+            email_sender=EmailSender
         )
         service.call(args)
         result['success'] = True

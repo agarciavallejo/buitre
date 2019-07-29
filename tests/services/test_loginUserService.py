@@ -51,6 +51,7 @@ def test_login_token():
             user.password = 'hashed_password'
             user.is_valid = True
             return user
+
         @staticmethod
         def persist(user):
             return user
