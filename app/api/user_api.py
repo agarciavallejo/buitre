@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime, timedelta
+from ..routes import app
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
@@ -88,11 +90,14 @@ def login_user():
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator=TokenManager,
-            hash_checker_func=check_password_hash
+            token_generator=TokenManager.generate_session_token,
+            hash_checker=check_password_hash
         )
         token = service.call(args)
         response['token'] = token
+        now = datetime.now()
+        expiration = now + timedelta(seconds=app.config.get('LOGIN_TOKEN_EXPIRATION'))
+        response['expiration'] = expiration.isoformat()
     except ArgumentException as e:
         response['error'] = e.message
         response_code = 500

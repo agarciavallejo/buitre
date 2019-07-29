@@ -1,4 +1,4 @@
-from itsdangerous import URLSafeTimedSerializer, TimedSerializer, SignatureExpired, BadTimeSignature
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from .exceptions import ExpiredTokenException, InvalidTokenException
 from ..routes import app
 
@@ -7,12 +7,12 @@ class TokenManager:
 
     @staticmethod
     def generate_session_token(payload=None):
-        s = TimedSerializer(app.config['SECRET_KEY'])
+        s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         return s.dumps(payload)
 
     @staticmethod
     def verify_session_token(token):
-        s = TimedSerializer(app.config['SECRET_KEY'])
+        s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         try:
             data = s.loads(token, max_age=app.config['LOGIN_TOKEN_EXPIRATION'])
         except SignatureExpired:

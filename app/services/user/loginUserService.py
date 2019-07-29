@@ -3,10 +3,10 @@ from ...utils.exceptions import AuthenticationException, ArgumentException, NoVa
 
 class LoginUserService:
 
-    def __init__(self, user_repository, token_generator, hash_checker_func):
+    def __init__(self, user_repository, token_generator, hash_checker):
         self.user_repository = user_repository
-        self.token_generator = token_generator
-        self.hash_checker_func = hash_checker_func
+        self.generate_session_token = token_generator
+        self.check_hash = hash_checker
 
     def call(self, args):
         if 'email' not in args or args['email'] is None:
@@ -19,12 +19,12 @@ class LoginUserService:
 
         user = self.user_repository.get_by_email(email)
 
-        if user is None or not self.hash_checker_func(user.password, password):
+        if user is None or not self.check_hash(user.password, password):
             raise AuthenticationException()
         if not user.has_been_validated():
             raise NoValidUserException()
 
-        session_token = self.token_generator.generate_session_token({'data': user.id})
+        session_token = self.generate_session_token(user.id)
         user.session_token = session_token
         self.user_repository.persist(user)
 
