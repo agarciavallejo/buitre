@@ -8,4 +8,3 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     LOGIN_TOKEN_EXPIRATION = 86400  # 1 day
     VALIDATION_TOKEN_EXPIRATION = 604800  # 1 week
-    SERVER_NAME = os.environ.get('SERVER_NAME') or 'localhost:5000'

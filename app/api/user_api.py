@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 
+from datetime import datetime, timedelta
+from ..routes import app
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
@@ -12,6 +14,7 @@ from ..utils.exceptions import \
     AuthenticationException, \
     NoValidUserException, \
     UserValidationException, ExpiredTokenException, InvalidTokenException
+from ..utils.email import EmailFactory, EmailSender
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -38,7 +41,9 @@ def create_user():
             user_repository=UserRepository,
             user_factory=UserFactory,
             password_hasher=generate_password_hash,
-            validation_token_generator=TokenManager.generate_validation_token
+            validation_token_generator=TokenManager.generate_validation_token,
+            email_factory=EmailFactory,
+            email_sender=EmailSender
         )
         service.call(args)
         result['success'] = True
@@ -89,11 +94,14 @@ def login_user():
     try:
         service = LoginUserService(
             user_repository=UserRepository,
-            token_generator=TokenManager,
-            hash_checker_func=check_password_hash
+            token_generator=TokenManager.generate_session_token,
+            hash_checker=check_password_hash
         )
         token = service.call(args)
         response['token'] = token
+        now = datetime.now()
+        expiration = now + timedelta(seconds=app.config.get('LOGIN_TOKEN_EXPIRATION'))
+        response['expiration'] = expiration.isoformat()
     except ArgumentException as e:
         response['error'] = e.message
         response_code = 500

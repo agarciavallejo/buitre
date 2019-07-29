@@ -1,1 +1,1 @@
-web: gunicorn buitre:app
+web: gunicorn -b :$PORT buitre:app

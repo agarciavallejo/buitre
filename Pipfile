@@ -24,6 +24,7 @@ graphene-sqlalchemy = "*"
 flask-graphql = "*"
 pytest = "*"
 requests = "*"
+mock = "*"
 
 [requires]
 python_version = "3.6"

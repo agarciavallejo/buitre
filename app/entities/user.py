@@ -67,7 +67,7 @@ class UserRepository:
 
     @staticmethod
     def persist(user):
-        user.persist()
+        return user.persist()
 
     @staticmethod
     def delete(id):
