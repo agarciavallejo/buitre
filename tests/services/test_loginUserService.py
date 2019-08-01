@@ -64,6 +64,6 @@ def test_login_token():
         def generate_session_token(anything):
             return "this-is-a-token"
 
-    service = LoginUserService(fakeRepo, fakeTokenManager, password_hasher_func)
+    service = LoginUserService(fakeRepo, fakeTokenManager.generate_session_token, password_hasher_func)
     token = service.call({'email': "andre@buitre.com", 'password': "unhashed_password"})
     assert token == 'this-is-a-token'
