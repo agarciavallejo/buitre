@@ -41,3 +41,8 @@ class InvalidTokenException(Exception):
     def __init__(self):
         message = 'invalid token'
         super().__init__(message)
+
+
+class UserNotFoundException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
