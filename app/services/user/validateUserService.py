@@ -27,6 +27,6 @@ class ValidateUserService:
 
         user.validate()
 
-        self.user_repository.persist(user)
+        user = self.user_repository.persist(user)
 
         return user
