@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+
 from datetime import datetime, timedelta
 from ..routes import app
 from ..entities.user import UserRepository, UserFactory
@@ -15,6 +16,7 @@ from ..utils.exceptions import \
     UserValidationException, ExpiredTokenException, InvalidTokenException, UserNotFoundException
 from ..utils.email import EmailFactory, EmailSender
 from ..utils.tokenManager import TokenManager
+from ..utils.email import EmailFactory, EmailSender
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
@@ -121,7 +123,6 @@ def login_user():
 
     return jsonify(response), response_code
 
-
 @user_api.route('/get', methods=['GET'])
 def get_user():
     response = {}
@@ -146,6 +147,7 @@ def get_user():
         response = GetUserService.call({'user_id': user_id})
     except UserNotFoundException as e:
         response['message'] = e.message
+
         response_code = 500
 
     return jsonify(response), response_code

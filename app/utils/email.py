@@ -24,6 +24,16 @@ class EmailFactory:
         email = Email(subject, body, [user_email], 'noreply@buitre.com')
         return email
 
+    @staticmethod
+    def create_user_recovery_email(user_name, user_email, recovery_token):
+        subject = 'BUITRE | Recover your account'
+        link = url_for('user_api.recover_user', recovery_token=recovery_token, _external=True)
+        body = 'Hello ' + user_name + ',<br>you can recover your account following the link below' \
+                                      '<br><a href="' + link + '">recover</a><br><br>If you have ' \
+                                                               'not requested your account recovery' \
+                                                               ' please ignore this message.'
+        email = Email(subject, body, [user_email], 'noreply@buitre.com')
+        return email
 
 class EmailSender:
 
