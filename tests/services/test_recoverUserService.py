@@ -5,88 +5,67 @@ from ...app.utils.exceptions import ArgumentException, InvalidTokenException, Ex
 from ...app.services.user.recoverUserService import RecoverUserService
 
 
-def test_arguments_token():
+class FakeRepo:
+    @staticmethod
+    def get_by_email(email):
+        if email == "unexisting@email.com":
+            return None
+        return User('andreu', 'andreu@buitre.com', 'old_hashed_pwd')
+
+    @staticmethod
+    def persist(user):
+        return user
+
+
+def fake_verifier(token):
+    if token == "unexisting_user_token":
+        return "unexisting@email.com"
+    if token == "invalid":
+        raise InvalidTokenException
+    if token == "expired":
+        raise ExpiredTokenException
+    return "some@email.com"
+
+
+def fake_hasher(password):
+    return "hashed_password"
+
+
+@pytest.fixture()
+def service():
+    service = RecoverUserService(
+        token_verifier=fake_verifier,
+        user_repository=FakeRepo,
+        password_hasher=fake_hasher
+    )
+    return service
+
+
+def test_arguments_token(service):
     with pytest.raises(ArgumentException):
-        service = RecoverUserService(
-            token_verifier=None,
-            user_repository=None,
-            password_hasher=None
-        )
         service.call({})
 
 
-def test_arguments_password():
+def test_arguments_password(service):
     with pytest.raises(ArgumentException):
-        service = RecoverUserService(
-            token_verifier=None,
-            user_repository=None,
-            password_hasher=None
-        )
         service.call({'recovery_token': "a-token"})
 
 
-def test_expired_token():
+def test_expired_token(service):
     with pytest.raises(ExpiredTokenException):
-        def fakeVerifier(token):
-            raise ExpiredTokenException
-
-        service = RecoverUserService(
-            token_verifier=fakeVerifier,
-            user_repository=None,
-            password_hasher=None
-        )
         service.call({'recovery_token': "expired", 'password': "123"})
 
 
-def test_invalid_token():
+def test_invalid_token(service):
     with pytest.raises(InvalidTokenException):
-        def fakeVerifier(token):
-            raise InvalidTokenException
-
-        service = RecoverUserService(
-            token_verifier=fakeVerifier,
-            user_repository=None,
-            password_hasher=None
-        )
         service.call({'recovery_token': "invalid", 'password': "123"})
 
 
-def test_unexisting_user():
+def test_unexisting_user(service):
     with pytest.raises(InvalidTokenException):
-        class fakeRepo:
-            @staticmethod
-            def get_by_email(email):
-                return None
+        service.call({'recovery_token': "unexisting_user_token", 'password': "123"})
 
-        def fakeVerifier(token):
-            return "some@email.com"
 
-        service = RecoverUserService(
-            token_verifier=fakeVerifier,
-            user_repository=fakeRepo,
-            password_hasher=None
-        )
-        service.call({'recovery_token': "token", 'password': "123"})
-
-def test_new_password_is_hashed():
-    class fakeRepo:
-        @staticmethod
-        def get_by_email(email):
-            return User('andreu', 'andreu@buitre.com', 'old_hashed_pwd')
-        @staticmethod
-        def persist(user):
-            return user
-
-    def fakeVerifier(token):
-        return "some@email.com"
-
-    def fakeHasher(password):
-        return "hashed_password"
-
-    service = RecoverUserService(
-        token_verifier=fakeVerifier,
-        user_repository=fakeRepo,
-        password_hasher=fakeHasher
-    )
+def test_new_password_is_hashed(service):
     user = service.call({'recovery_token': "token", 'password': "123"})
     assert user.password == "hashed_password"
