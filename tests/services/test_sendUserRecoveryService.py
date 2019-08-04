@@ -5,59 +5,51 @@ from ...app.services.user.sendUserRecoveryService import SendUserRecoveryService
 from ...app.utils.exceptions import ArgumentException, AuthenticationException
 
 
-def test_email_required():
-    with pytest.raises(ArgumentException):
-        service = SendUserRecoveryService(
-            user_repository=None,
-            email_factory=None,
-            email_sender=None,
-            token_generator=None
-        )
-        service.call({})
+class fakeRepo:
+    @staticmethod
+    def get_by_email(email):
+        if email == "email_that_does_not_exist":
+            return None
+        user = User('andreu', 'andreu@andreu.com', '123')
+        return user
 
 
-def test_unexisting_user():
-    with pytest.raises(AuthenticationException):
-        class fakerepo:
-            @staticmethod
-            def get_by_email(email):
-                return None
-
-        service = SendUserRecoveryService(
-            user_repository=fakerepo,
-            email_factory=None,
-            email_sender=None,
-            token_generator=None
-        )
-        service.call({'email': "email_that_does_not_exist"})
+class fakeFactory:
+    @staticmethod
+    def create_user_recovery_email(name, email, token):
+        return "Something"
 
 
-def test_existing_user():
-    class fakeRepo:
-        @staticmethod
-        def get_by_email(email):
-            user = User('andreu', 'andreu@andreu.com', '123')
-            return user
+class fakeSender:
+    @staticmethod
+    def send(email):
+        return True
 
-    class fakeFactory:
-        @staticmethod
-        def create_recovery_email(name, email, token):
-            return "Something"
 
-    class fakeSender:
-        @staticmethod
-        def send(email):
-            return True
+def fakeTokenGenerator(email):
+    return "recovery-token"
 
-    def fakeTokenGenerator(email):
-        return "recovery-token"
 
+@pytest.fixture()
+def service():
     service = SendUserRecoveryService(
         user_repository=fakeRepo,
         email_factory=fakeFactory,
         email_sender=fakeSender,
         token_generator=fakeTokenGenerator
     )
-    service.call({
-        'email': "andreu@andreu.com"
-    })
+    return service
+
+
+def test_email_required(service):
+    with pytest.raises(ArgumentException):
+        service.call({})
+
+
+def test_unexisting_user(service):
+    with pytest.raises(AuthenticationException):
+        service.call({'email': "email_that_does_not_exist"})
+
+
+def test_existing_user(service):
+    service.call({'email': "andreu@andreu.com"})
