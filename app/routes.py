@@ -8,6 +8,7 @@ from .utils.customEncoder import CustomEncoder
 from .ql import qlschema, GraphQLView
 from .api.user_api import user_api
 from .api.profile_api import profile_api
+from .api.opportunity_api import opportunity_api
 
 app.debug = True
 
@@ -16,6 +17,7 @@ c = Controller(session)
 app.json_encoder = CustomEncoder
 app.register_blueprint(user_api, url_prefix='/api/user')
 app.register_blueprint(profile_api, url_prefix='/api/profile')
+app.register_blueprint(opportunity_api, url_prefix='/api/opportunity')
 
 # create test user
 initial_users = session.query(User).all()

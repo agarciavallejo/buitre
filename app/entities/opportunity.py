@@ -36,6 +36,18 @@ class Opportunity(Entity, Base):
         self.closing_date = closing_date
         self.user_id = user_id
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'score': self.score,
+            'closing_date': self.closing_date,
+            'user': self.user_id
+        }
+
 
 class OpportunitySchema(Schema):
     id = fields.Integer()
@@ -68,3 +80,4 @@ class OpportunityRepository:
             oppo = session.query(Opportunity).get(like.opportunity_id)
             liked.append(oppo)
         return liked
+
