@@ -6,6 +6,7 @@ from .opportunityLike import OpportunityLike
 from .userTag import UserTag
 from marshmallow import Schema, fields
 
+
 class User(Entity, Base):
     __tablename__ = 'User'
 
@@ -37,6 +38,17 @@ class User(Entity, Base):
 
     def validate(self):
         self.is_valid = True
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'radius': self.radius,
+            'score': self.score
+        }
 
 
 class UserSchema(Schema):

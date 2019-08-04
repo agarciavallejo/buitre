@@ -1,4 +1,4 @@
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature, BadSignature
 from .exceptions import ExpiredTokenException, InvalidTokenException
 from ..routes import app
 
@@ -17,7 +17,7 @@ class TokenManager:
             data = s.loads(token, max_age=app.config['LOGIN_TOKEN_EXPIRATION'])
         except SignatureExpired:
             raise ExpiredTokenException
-        except BadTimeSignature:
+        except (BadTimeSignature, BadSignature):
             raise InvalidTokenException
 
         return data

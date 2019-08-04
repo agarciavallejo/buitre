@@ -5,17 +5,27 @@ from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
 from ..services.user.validateUserService import ValidateUserService
+from ..services.user.authenticateUserService import AuthenticateUserService
+from ..services.user.getUserService import GetUserService
 from ..utils.exceptions import \
     EmailInUseException, \
     ArgumentException, \
     AuthenticationException, \
     NoValidUserException, \
-    UserValidationException
+    UserValidationException, ExpiredTokenException, InvalidTokenException, UserNotFoundException
 from ..utils.email import EmailFactory, EmailSender
 from ..utils.tokenManager import TokenManager
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_api = Blueprint('user_api', __name__)
+
+# Instantiate services
+AuthenticateUserService = AuthenticateUserService(
+    token_verifier=TokenManager.verify_session_token
+)
+GetUserService = GetUserService(
+    user_repository=UserRepository
+)
 
 
 @user_api.route('/create', methods=['POST'])
@@ -112,8 +122,37 @@ def login_user():
     return jsonify(response), response_code
 
 
+@user_api.route('/get', methods=['GET'])
+def get_user():
+    response = {}
+    response_code = 200
+
+    token = request.args.get('auth_token')
+    if token is None:
+        response['message'] = 'missing auth_token GET param'
+        response_code = 401
+        return jsonify(response), response_code
+
+    try:
+        user_id = AuthenticateUserService.call({
+            'token': token
+        })
+    except (ExpiredTokenException, InvalidTokenException) as e:
+        response['message'] = e.message
+        response_code = 401
+        return jsonify(response), response_code
+
+    try:
+        response = GetUserService.call({'user_id': user_id})
+    except UserNotFoundException as e:
+        response['message'] = e.message
+        response_code = 500
+
+    return jsonify(response), response_code
+
+
 @user_api.route('/delete/<int:id>', methods=['GET'])
-def get_user(id):
+def delete_user(id):
     response = {}
     response_code = 200
 
