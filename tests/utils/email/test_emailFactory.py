@@ -3,6 +3,8 @@ import pytest
 from ....app.utils.email import EmailFactory
 from ....app.routes import app
 
+app.config['SERVER_NAME'] = "testinghost"
+
 
 def test_create_user_recovery_email_returns_email():
     with app.app_context():
