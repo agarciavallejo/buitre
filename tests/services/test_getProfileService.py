@@ -1,7 +1,8 @@
 import pytest
 
-from ...app.entities.opportunity import Opportunity
 from ...app.entities.comment import Comment
+from ...app.entities.opportunity import Opportunity
+from ...app.entities.tag import Tag
 from ...app.entities.user import User
 from ...app.utils.exceptions import ArgumentException, UserNotFoundException
 from ...app.services.profile.getProfileService import GetProfileService
@@ -49,12 +50,25 @@ class FakeOppoRepo:
         return opportunities
 
 
+class FakeTagRepo:
+    @staticmethod
+    def get_by_user_id(user_id):
+        tags = []
+        if user_id == 1:
+            return tags
+        tag = Tag("Bicicletas")
+        tag.id = 1
+        tags.append(tag)
+        return tags
+
+
 @pytest.fixture()
 def service():
     service = GetProfileService(
         user_repository=FakeUserRepo,
         comment_repository=FakeCommentRepo,
-        opportunity_repository=FakeOppoRepo
+        opportunity_repository=FakeOppoRepo,
+        tag_repository=FakeTagRepo
     )
     return service
 
@@ -96,3 +110,15 @@ def test_some_comments(service):
 def test_no_opportunities(service):
     profile = service.call({'user_id': 1})
     assert profile['opportunities'] == []
+
+
+def test_no_tags(service):
+    profile = service.call({'user_id': 1})
+    assert profile['tags'] == []
+
+
+def test_some_tags(service):
+    profile = service.call({'user_id': 2})
+    assert profile['tags'][0] is not None
+    assert profile['tags'][0]['name'] == "Bicicletas"
+    assert profile['tags'][0]['id'] == 1

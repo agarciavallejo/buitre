@@ -3,10 +3,11 @@ from ...utils.exceptions import ArgumentException, UserNotFoundException
 
 class GetProfileService:
 
-    def __init__(self, user_repository, comment_repository, opportunity_repository):
+    def __init__(self, user_repository, comment_repository, opportunity_repository, tag_repository):
         self.user_repository = user_repository
         self.comment_repository = comment_repository
         self.opportunity_repository = opportunity_repository
+        self.tag_repository = tag_repository
 
     def call(self, args):
         if 'user_id' not in args:
@@ -29,9 +30,24 @@ class GetProfileService:
         )
         # TODO: add profile picture when implemented
 
-        tags = []
-        profile_data['tags'] = tags
+        profile_data['tags'] = self.get_tags(user_id)
+        profile_data['opportunities'] = self.get_opportunities(user_id)
+        profile_data['favorited_opportunities'] = self.get_favorited_opportunities(user_id)
+        profile_data['contributions'] = self.get_contributions(user_id)
 
+        return profile_data
+
+    def get_tags(self, user_id):
+        tags = []
+        for t in self.tag_repository.get_by_user_id(user_id):
+            tag = dict(
+                name=t.name,
+                id=t.id
+            )
+            tags.append(tag)
+        return tags
+
+    def get_opportunities(self, user_id):
         opportunities = []
         for o in self.opportunity_repository.get_by_user_id(user_id):
             opportunity = {
@@ -39,17 +55,19 @@ class GetProfileService:
                 'id': o.id
             }
             opportunities.append(opportunity)
-        profile_data['opportunities'] = opportunities
+        return opportunities
 
-        favorites = []
-        profile_data['favorited_opportunities'] = favorites
+    def get_favorited_opportunities(self, user_id):
+        return []
 
+    def get_contributions(self, user_id):
         contributions = []
         for c in self.comment_repository.get_by_user_id(user_id):
             comment = dict(
                 type="comment",
                 text=c.text,
                 opportunity_id=c.opportunity_id,
+                score=c.score,
                 created_at=c.created_at
             )
             opportunity = self.opportunity_repository.get_by_id(c.opportunity_id)
@@ -57,8 +75,4 @@ class GetProfileService:
             contributions.append(comment)
             # TODO: add other contributions like corrections to opportunities
 
-        profile_data['contributions'] = contributions
-
-
-
-        return profile_data
+        return contributions
