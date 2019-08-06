@@ -16,6 +16,7 @@ from ..utils.email import EmailFactory, EmailSender
 from ..entities.user import UserRepository, UserFactory
 from ..entities.comment import CommentRepository
 from ..entities.opportunity import OpportunityRepository
+from ..entities.picture import PictureRepository
 from ..entities.tag import TagRepository
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -58,7 +59,8 @@ GetProfileService = GetProfileService(
     user_repository=UserRepository,
     opportunity_repository=OpportunityRepository,
     comment_repository=CommentRepository,
-    tag_repository=TagRepository
+    tag_repository=TagRepository,
+    picture_repository=PictureRepository
 )
 
 
