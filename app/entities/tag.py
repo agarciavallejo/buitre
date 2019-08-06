@@ -16,6 +16,7 @@ class Tag(Entity, Base):
     users = relationship("UserTag", back_populates="tag")
 
     def __init__(self, name, tag_id=None):
+        super().__init__("script")
         self.name = name
         self.tag_id = tag_id
 
