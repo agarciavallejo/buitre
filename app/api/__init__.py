@@ -14,8 +14,9 @@ from ..services.profile.getProfileService import GetProfileService
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
 from ..entities.user import UserRepository, UserFactory
-from ..entities.opportunity import OpportunityRepository
 from ..entities.comment import CommentRepository
+from ..entities.opportunity import OpportunityRepository
+from ..entities.tag import TagRepository
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # INSTANTIATE SERVICES
@@ -56,7 +57,8 @@ RecoverUserService = RecoverUserService(
 GetProfileService = GetProfileService(
     user_repository=UserRepository,
     opportunity_repository=OpportunityRepository,
-    comment_repository=CommentRepository
+    comment_repository=CommentRepository,
+    tag_repository=TagRepository
 )
 
 

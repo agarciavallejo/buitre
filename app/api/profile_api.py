@@ -1,7 +1,6 @@
 from flask import g, jsonify, Blueprint
 
 from ..api import authenticate_user, GetProfileService
-from ..routes import app
 
 profile_api = Blueprint('profile_api', __name__)
 
