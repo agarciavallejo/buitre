@@ -51,7 +51,7 @@ class FakeOppoRepo:
         return opportunities
 
     @staticmethod
-    def get_by_favorited_by(user_id):
+    def get_by_liked_by(user_id):
         favorited = []
         if user_id == 1:
             return favorited

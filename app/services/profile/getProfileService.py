@@ -66,7 +66,7 @@ class GetProfileService:
 
     def get_favorited_opportunities(self, user_id):
         favorited_opportunities = []
-        for fav in self.opportunity_repository.get_by_favorited_by(user_id):
+        for fav in self.opportunity_repository.get_by_liked_by(user_id):
             opportunity = dict(
                 id=fav.id,
                 name=fav.name,

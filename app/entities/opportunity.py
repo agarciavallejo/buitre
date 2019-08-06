@@ -61,10 +61,10 @@ class OpportunityRepository:
         return opportunities
 
     @staticmethod
-    def get_by_favorited_by(user_id):
-        favorited = []
+    def get_by_liked_by(user_id):
+        liked = []
         oppolikes = session.query(OpportunityLike).filter_by(user_id=user_id).all()
         for like in oppolikes:
             oppo = session.query(Opportunity).get(like.opportunity_id)
-            favorited.append(oppo)
-        return favorited
+            liked.append(oppo)
+        return liked
