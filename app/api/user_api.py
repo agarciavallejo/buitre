@@ -8,7 +8,6 @@ from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
 from ..services.user.loginUserService import LoginUserService
 from ..services.user.validateUserService import ValidateUserService
-from ..services.user.authenticateUserService import AuthenticateUserService
 from ..services.user.getUserService import GetUserService
 from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
