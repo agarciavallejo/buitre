@@ -1,7 +1,7 @@
 from ...utils.exceptions import ArgumentException, UserNotFoundException
 
 
-class GetProfile:
+class GetProfileService:
 
     def __init__(self, user_repository, comment_repository, opportunity_repository):
         self.user_repository = user_repository
