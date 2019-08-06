@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, g
 
 from datetime import datetime, timedelta
 
-from app.api import authenticate_user, CreateUserService, ValidateUserService, LoginUserService, GetUserService, \
+from ..api import authenticate_user, CreateUserService, ValidateUserService, LoginUserService, GetUserService, \
     SendUserRecoveryService, RecoverUserService
 from ..routes import app
 from ..entities.user import UserRepository
