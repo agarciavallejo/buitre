@@ -1,6 +1,6 @@
 from flask import g, jsonify
 
-from ..api import authenticate_user, GetProfile
+from ..api import authenticate_user, GetProfileService
 from ..routes import app
 
 
@@ -14,7 +14,7 @@ def get_public_profile(id):
 def get_profile():
     user_id = g.user_id
 
-    response = GetProfile({'user_id': user_id})
+    response = GetProfileService({'user_id': user_id})
     response_code = 200
 
     return jsonify(response), response_code
