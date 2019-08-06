@@ -50,6 +50,15 @@ class FakeOppoRepo:
         opportunities.append(oppo)
         return opportunities
 
+    @staticmethod
+    def get_by_favorited_by(user_id):
+        favorited = []
+        if user_id == 1:
+            return favorited
+        oppo = Opportunity("Oportunidad 3", 2)
+        favorited.append(oppo)
+        return favorited
+
 
 class FakeTagRepo:
     @staticmethod
@@ -143,3 +152,13 @@ def test_some_tags(service):
     assert len(profile['tags']) is not 0
     assert profile['tags'][0]['name'] == "Bicicletas"
     assert profile['tags'][0]['id'] == 1
+
+
+def test_no_favorites(service):
+    profile = service.call({'user_id': 1})
+    assert len(profile['favorited_opportunities']) is 0
+
+
+def test_some_favorites(service):
+    profile = service.call({'user_id': 2})
+    assert len(profile['favorited_opportunities']) is not 0

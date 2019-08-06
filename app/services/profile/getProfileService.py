@@ -65,7 +65,20 @@ class GetProfileService:
         return opportunities
 
     def get_favorited_opportunities(self, user_id):
-        return []
+        favorited_opportunities = []
+        for fav in self.opportunity_repository.get_by_favorited_by(user_id):
+            opportunity = dict(
+                id=fav.id,
+                name=fav.name,
+                picture=""
+            )
+
+            pictures = self.picture_repository.get_by_opportunity_id(fav.id)
+            if len(pictures):
+                opportunity['picture'] = pictures[0].path
+
+            favorited_opportunities.append(opportunity)
+        return favorited_opportunities
 
     def get_contributions(self, user_id):
         contributions = []
