@@ -9,10 +9,13 @@ from ..services.user.loginUserService import LoginUserService
 from ..services.user.getUserService import GetUserService
 from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
+from ..services.profile.getProfileService import GetProfileService
 
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
 from ..entities.user import UserRepository, UserFactory
+from ..entities.opportunity import OpportunityRepository
+from ..entities.comment import CommentRepository
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # INSTANTIATE SERVICES
@@ -49,6 +52,11 @@ RecoverUserService = RecoverUserService(
     token_verifier=TokenManager.verify_validation_token,
     user_repository=UserRepository,
     password_hasher=generate_password_hash
+)
+GetProfileService = GetProfileService(
+    user_repository=UserRepository,
+    opportunity_repository=OpportunityRepository,
+    comment_repository=CommentRepository
 )
 
 
