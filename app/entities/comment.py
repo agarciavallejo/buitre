@@ -20,7 +20,7 @@ class Comment(Entity, Base):
 
     def __init__(self, text, user_id, opportunity_id):
         self.text = text
-        self.score = score
+        self.score = 0
         self.opportunity_id = opportunity_id
         self.user_id = user_id
 
