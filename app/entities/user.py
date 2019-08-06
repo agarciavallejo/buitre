@@ -69,7 +69,7 @@ class UserRepository:
 
     @staticmethod
     def get_by_email(email):
-        user = session.query(User).filter_by(email=email).first()
+        user = session.query(User).filter_by(email=str(email)).first()
         return user
 
     @staticmethod
