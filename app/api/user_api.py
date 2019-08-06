@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 
 from datetime import datetime, timedelta
 
+from app.api import authenticate_user
 from ..routes import app
 from ..entities.user import UserRepository, UserFactory
 from ..services.user.createUserService import CreateUserService
@@ -40,9 +41,6 @@ LoginUserService = LoginUserService(
     user_repository=UserRepository,
     token_generator=TokenManager.generate_session_token,
     hash_checker=check_password_hash
-)
-AuthenticateUserService = AuthenticateUserService(
-    token_verifier=TokenManager.verify_session_token
 )
 GetUserService = GetUserService(
     user_repository=UserRepository
@@ -131,24 +129,12 @@ def login_user():
 
 
 @user_api.route('/get', methods=['GET'])
+@authenticate_user
 def get_user():
     response = {}
     response_code = 200
 
-    token = request.args.get('auth_token')
-    if token is None:
-        response['message'] = 'missing auth_token GET param'
-        response_code = 401
-        return jsonify(response), response_code
-
-    try:
-        user_id = AuthenticateUserService.call({
-            'token': token
-        })
-    except (ExpiredTokenException, InvalidTokenException) as e:
-        response['message'] = e.message
-        response_code = 401
-        return jsonify(response), response_code
+    user_id = g.user_id
 
     try:
         response = GetUserService.call({
