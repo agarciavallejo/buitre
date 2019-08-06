@@ -1,5 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
 from sqlalchemy.orm import relationship
+
+from .opportunityLike import OpportunityLike
 from .entity import Entity, Base, session
 from marshmallow import Schema, fields
 
@@ -57,3 +59,12 @@ class OpportunityRepository:
     def get_by_user_id(user_id):
         opportunities = session.query(Opportunity).filter_by(user_id=user_id).all()
         return opportunities
+
+    @staticmethod
+    def get_by_favorited_by(user_id):
+        favorited = []
+        oppolikes = session.query(OpportunityLike).filter_by(user_id=user_id).all()
+        for like in oppolikes:
+            oppo = session.query(Opportunity).get(like.opportunity_id)
+            favorited.append(oppo)
+        return favorited
