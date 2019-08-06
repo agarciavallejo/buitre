@@ -2,6 +2,7 @@ import pytest
 
 from ...app.entities.comment import Comment
 from ...app.entities.opportunity import Opportunity
+from ...app.entities.picture import Picture
 from ...app.entities.tag import Tag
 from ...app.entities.user import User
 from ...app.utils.exceptions import ArgumentException, UserNotFoundException
@@ -62,13 +63,25 @@ class FakeTagRepo:
         return tags
 
 
+class FakePictureRepo:
+    @staticmethod
+    def get_by_opportunity_id(opportunity_id):
+        pictures = []
+        if opportunity_id != 1:
+            return pictures
+        picture = Picture(opportunity_id, "http://cdn.buitre.com/opo1-front.png")
+        pictures.append(picture)
+        return pictures
+
+
 @pytest.fixture()
 def service():
     service = GetProfileService(
         user_repository=FakeUserRepo,
         comment_repository=FakeCommentRepo,
         opportunity_repository=FakeOppoRepo,
-        tag_repository=FakeTagRepo
+        tag_repository=FakeTagRepo,
+        picture_repository=FakePictureRepo
     )
     return service
 
@@ -95,12 +108,12 @@ def test_user_data(service):
 
 def test_no_comments(service):
     profile = service.call({'user_id': 1})
-    assert profile['contributions'] == []
+    assert len(profile['contributions']) is 0
 
 
 def test_some_comments(service):
     profile = service.call({'user_id': 2})
-    assert profile['contributions'][0] is not None
+    assert len(profile['contributions']) is not 0
     assert profile['contributions'][0]['text'] == "comment text"
     assert profile['contributions'][0]['created_at'] == "2019-08-08 20:18:33"
     assert profile['contributions'][0]['opportunity_id'] == 1
@@ -109,16 +122,24 @@ def test_some_comments(service):
 
 def test_no_opportunities(service):
     profile = service.call({'user_id': 1})
-    assert profile['opportunities'] == []
+    assert len(profile['opportunities']) is 0
+
+
+def test_some_opportunities(service):
+    profile = service.call({'user_id': 2})
+    assert len(profile['opportunities']) is not 0
+    assert profile['opportunities'][0]['name'] == "Oportunidad 2"
+    assert profile['opportunities'][0]['id'] == 1
+    assert profile['opportunities'][0]['picture'] == "http://cdn.buitre.com/opo1-front.png"
 
 
 def test_no_tags(service):
     profile = service.call({'user_id': 1})
-    assert profile['tags'] == []
+    assert len(profile['tags']) is 0
 
 
 def test_some_tags(service):
     profile = service.call({'user_id': 2})
-    assert profile['tags'][0] is not None
+    assert len(profile['tags']) is not 0
     assert profile['tags'][0]['name'] == "Bicicletas"
     assert profile['tags'][0]['id'] == 1

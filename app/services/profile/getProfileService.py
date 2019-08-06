@@ -3,11 +3,12 @@ from ...utils.exceptions import ArgumentException, UserNotFoundException
 
 class GetProfileService:
 
-    def __init__(self, user_repository, comment_repository, opportunity_repository, tag_repository):
+    def __init__(self, user_repository, comment_repository, opportunity_repository, tag_repository, picture_repository):
         self.user_repository = user_repository
         self.comment_repository = comment_repository
         self.opportunity_repository = opportunity_repository
         self.tag_repository = tag_repository
+        self.picture_repository = picture_repository
 
     def call(self, args):
         if 'user_id' not in args:
@@ -52,8 +53,14 @@ class GetProfileService:
         for o in self.opportunity_repository.get_by_user_id(user_id):
             opportunity = {
                 'name': o.name,
-                'id': o.id
+                'id': o.id,
+                'picture': ""
             }
+
+            pictures = self.picture_repository.get_by_opportunity_id(o.id)
+            if len(pictures):
+                opportunity['picture'] = pictures[0].path
+
             opportunities.append(opportunity)
         return opportunities
 
