@@ -18,7 +18,12 @@ def get_profile():
 
 @profile_api.route('/<int:id>', methods=['GET'])
 def get_public_profile(id):
-    pass
+
+    response = GetProfileService.call({'user_id': id})
+    response.pop('email', None)
+    response_code = 200
+
+    return jsonify(response), response_code
 
 
 @profile_api.route('/update', methods=["POST"])
