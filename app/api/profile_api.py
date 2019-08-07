@@ -1,6 +1,6 @@
-from flask import g, jsonify, Blueprint
+from flask import g, jsonify, Blueprint, request
 
-from ..api import authenticate_user, GetProfileService
+from ..api import authenticate_user, GetProfileService, UpdateProfileService
 
 profile_api = Blueprint('profile_api', __name__)
 
@@ -29,4 +29,24 @@ def get_public_profile(id):
 @profile_api.route('/update', methods=["POST"])
 @authenticate_user
 def update_profile():
-    pass
+
+    user_id = g.user_id
+
+    args = {
+        'user_id': user_id
+    }
+
+    if request.form.get('name'):
+        args['name'] = request.form.get('name')
+    if request.form.get('latitude'):
+        args['latitude'] = request.form.get('latitude')
+    if request.form.get('longitude'):
+        args['longitude'] = request.form.get('longitude')
+    if request.form.get('radius'):
+        args['radius'] = request.form.get('radius')
+    if request.form.get('profile_picture'):
+        args['profile_picture'] = request.form.get('profile_picture')
+
+    UpdateProfileService.call({args})
+
+    return jsonify({'message': "OK"}), 200

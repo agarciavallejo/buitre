@@ -10,6 +10,7 @@ from ..services.user.getUserService import GetUserService
 from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
 from ..services.profile.getProfileService import GetProfileService
+from ..services.profile.updateProfileService import UpdateProfileService
 
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
@@ -61,6 +62,9 @@ GetProfileService = GetProfileService(
     comment_repository=CommentRepository,
     tag_repository=TagRepository,
     picture_repository=PictureRepository
+)
+UpdateProfileService = UpdateProfileService(
+    user_repository=UserRepository
 )
 
 
