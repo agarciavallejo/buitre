@@ -19,6 +19,7 @@ class FakeUserRepo:
         user.radius = 1000
         user.latitude = 39.6196049
         user.longitude = 2.6004091
+        user.profile_picture = "http://cdn.buitre.com/profile-00001.png"
         return user
 
 
@@ -113,6 +114,7 @@ def test_user_data(service):
     assert profile['longitude'] == 2.6004091
     assert profile['latitude'] == 39.6196049
     assert profile['radius'] == 1000
+    assert profile['picture'] == "http://cdn.buitre.com/profile-00001.png"
 
 
 def test_no_comments(service):

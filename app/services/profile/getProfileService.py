@@ -27,7 +27,8 @@ class GetProfileService:
             score=user.score,
             latitude=user.latitude,
             longitude=user.longitude,
-            radius=user.radius
+            radius=user.radius,
+            picture=user.profile_picture
         )
         # TODO: add profile picture when implemented
 
