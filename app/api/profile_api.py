@@ -20,7 +20,13 @@ def get_profile():
 def get_public_profile(id):
 
     response = GetProfileService.call({'user_id': id})
+
+    # remove private information
     response.pop('email', None)
+    response.pop('latitude', None)
+    response.pop('longitude', None)
+    response.pop('radius', None)
+
     response_code = 200
 
     return jsonify(response), response_code
