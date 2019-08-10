@@ -2,6 +2,11 @@ import functools
 from flask import request, g, jsonify
 
 from ..utils.exceptions import ExpiredTokenException, InvalidTokenException
+
+from ..services.opportunity.getOpportunityService import GetOpportunityService
+from ..services.profile.getProfileService import GetProfileService
+from ..services.profile.updateProfileService import UpdateProfileService
+from ..services.profile.updateUserTagsService import UpdateUserTagsService
 from ..services.user.authenticateUserService import AuthenticateUserService
 from ..services.user.createUserService import CreateUserService
 from ..services.user.validateUserService import ValidateUserService
@@ -9,9 +14,6 @@ from ..services.user.loginUserService import LoginUserService
 from ..services.user.getUserService import GetUserService
 from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
-from ..services.profile.getProfileService import GetProfileService
-from ..services.profile.updateProfileService import UpdateProfileService
-from ..services.profile.updateUserTagsService import UpdateUserTagsService
 
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
@@ -69,6 +71,9 @@ UpdateProfileService = UpdateProfileService(
 )
 UpdateUserTagsService = UpdateUserTagsService(
     tag_repository=TagRepository
+)
+GetOpportunityService = GetOpportunityService(
+    opportunity_repository=OpportunityRepository
 )
 
 
