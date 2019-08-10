@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric
 from sqlalchemy.orm import relationship
-from .entity import Entity, Base
+from .entity import Entity, Base, session
 from marshmallow import Schema, fields
 
 
@@ -19,8 +19,9 @@ class Comment(Entity, Base):
     liked_by = relationship("CommentLike", back_populates="comment")
 
     def __init__(self, text, user_id, opportunity_id):
+        super(Comment, self).__init__(user_id)
         self.text = text
-        self.score = score
+        self.score = 0
         self.opportunity_id = opportunity_id
         self.user_id = user_id
 
@@ -31,3 +32,11 @@ class CommentSchema(Schema):
     score = fields.Decimal()
     opportunity_id = fields.Integer()
     user_id = fields.Integer()
+
+
+class CommentRepository:
+    @staticmethod
+    def get_by_user_id(user_id):
+        comments = session.query(Comment).filter_by(user_id=user_id).all()
+        return comments
+

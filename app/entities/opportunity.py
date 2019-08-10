@@ -1,6 +1,8 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
 from sqlalchemy.orm import relationship
-from .entity import Entity, Base
+
+from .opportunityLike import OpportunityLike
+from .entity import Entity, Base, session
 from marshmallow import Schema, fields
 
 
@@ -25,6 +27,7 @@ class Opportunity(Entity, Base):
 
     def __init__(self, name, user_id, description="",
         latitude=None, longitude=None, score=0, closing_date=None):
+        super().__init__(user_id)
         self.name = name
         self.description = description
         self.latitude = latitude
@@ -43,3 +46,25 @@ class OpportunitySchema(Schema):
     score = fields.Decimal()
     closing_date = fields.Date()
     user_id = fields.Integer()
+
+
+class OpportunityRepository:
+
+    @staticmethod
+    def get_by_id(id):
+        opportunity = session.query(Opportunity).filter_by(id=id).first()
+        return opportunity
+
+    @staticmethod
+    def get_by_user_id(user_id):
+        opportunities = session.query(Opportunity).filter_by(user_id=user_id).all()
+        return opportunities
+
+    @staticmethod
+    def get_by_liked_by(user_id):
+        liked = []
+        oppolikes = session.query(OpportunityLike).filter_by(user_id=user_id).all()
+        for like in oppolikes:
+            oppo = session.query(Opportunity).get(like.opportunity_id)
+            liked.append(oppo)
+        return liked

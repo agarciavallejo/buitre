@@ -1,5 +1,5 @@
 from . import app
-from flask import  jsonify, request
+from flask import jsonify, request, url_for
 from .entities.user import User, UserSchema
 from .entities.opportunity import Opportunity, OpportunitySchema
 from .entities.entity import Base, session
@@ -7,6 +7,7 @@ from .controller import Controller
 from .utils.customEncoder import CustomEncoder
 from .ql import qlschema, GraphQLView
 from .api.user_api import user_api
+from .api.profile_api import profile_api
 
 app.debug = True
 
@@ -14,6 +15,7 @@ c = Controller(session)
 
 app.json_encoder = CustomEncoder
 app.register_blueprint(user_api, url_prefix='/api/user')
+app.register_blueprint(profile_api, url_prefix='/api/profile')
 
 # create test user
 initial_users = session.query(User).all()
@@ -24,10 +26,9 @@ if len(initial_users) == 0:
     session.commit()
     session.close()
 
+
 # public methods
 @app.route('/')
-
-@app.route("/users")
 def get_users():
     users_object = session.query(User).all()
     user_schema = UserSchema(many=True)
@@ -49,21 +50,23 @@ def list_opportunities():
 @app.route("/opportunity/create/<user_id>")
 def create_opo(user_id):
     user = c.getUser(user_id)
-    if(user):
+    if (user):
         c.createOpportunity("Oportunitat2", user_id)
         return "DONE"
     else:
         return "USER NOT FOUND"
 
+
 @app.route("/opportunity/<id>/picture/add")
 def create_opportunity_picture(id):
     opportunity = c.getOpportunity(id)
-    if(opportunity):
+    if (opportunity):
         path = "path/to/a/file.png"
         c.createOpportunityPicture(id, path)
         return "DONE"
     else:
         return "NOT DONE"
+
 
 # query string params test
 @app.route("/opportunity/find")
@@ -71,18 +74,22 @@ def create_opportunity():
     q = request.args
     return jsonify(q)
 
+
 @app.route('/opportunity/<id>/addtag/<tag_id>')
-def add_tag_to_opportunity(id,tag_id):
+def add_tag_to_opportunity(id, tag_id):
     c.opportunityAddTag(int(id), int(tag_id))
+
 
 @app.route('/tag')
 def list_tags():
     return jsonify(c.getTags())
 
+
 @app.route("/tag/create/<name>")
 def create_tag(name):
     id = c.createTag(name)
     return "Tag %s created with id %s" % (name, id)
+
 
 @app.route("/test")
 def test_action():
@@ -96,7 +103,8 @@ def test_action():
     schedules = o_sch.dump(db_sch)
 
     return jsonify(schedules)
-    
+
+
 # GraphQL Interface
 
 app.add_url_rule(
@@ -104,6 +112,6 @@ app.add_url_rule(
     view_func=GraphQLView.as_view(
         'graphql',
         schema=qlschema,
-        graphiql=True # for having the GraphiQL interface
+        graphiql=True  # for having the GraphiQL interface
     )
 )

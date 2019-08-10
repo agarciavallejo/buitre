@@ -20,6 +20,7 @@ class User(Entity, Base):
     score = Column("score", Integer)
     session_token = Column('session_token', String)
     validation_token = Column('validation_token', String)
+    profile_picture = Column('profile_picture', String)
 
     tags = relationship("UserTag", back_populates="user")
     opportunities_created = relationship("Opportunity", back_populates="created_by")
@@ -47,7 +48,8 @@ class User(Entity, Base):
             'latitude': self.latitude,
             'longitude': self.longitude,
             'radius': self.radius,
-            'score': self.score
+            'score': self.score,
+            'profile_picture': self.profile_picture
         }
 
 
@@ -63,6 +65,7 @@ class UserSchema(Schema):
     score = fields.Integer()
     session_token = fields.Str()
     validation_token = fields.Str()
+    profile_picture = fields.Str()
 
 
 class UserRepository:
