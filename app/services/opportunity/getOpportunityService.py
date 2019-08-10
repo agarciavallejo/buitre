@@ -1,6 +1,7 @@
 from ...utils.exceptions import ArgumentException, OpportunityNotFoundException
 
-class GetOpportunityService():
+
+class GetOpportunityService:
 
     def __init__(self, opportunity_repository):
         self.opportunity_repository = opportunity_repository
@@ -14,6 +15,6 @@ class GetOpportunityService():
         opportunity = self.opportunity_repository.get_by_id(opportunity_id)
 
         if opportunity is None:
-            raise OpportunityNotFoundException('opportunity ' + str(user_id) + ' not found')
+            raise OpportunityNotFoundException('opportunity ' + str(opportunity_id) + ' not found')
 
         return opportunity.to_dict()
