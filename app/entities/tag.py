@@ -20,6 +20,12 @@ class Tag(Entity, Base):
         self.name = name
         self.tag_id = tag_id
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
+
 
 class TagSchema(Schema):
     id = fields.Integer()

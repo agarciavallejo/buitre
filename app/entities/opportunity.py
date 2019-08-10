@@ -16,7 +16,7 @@ class Opportunity(Entity, Base):
     score = Column("score", Numeric)
     closing_date = Column("closing_date", Date)
     user_id = Column("user_id", Integer,
-        ForeignKey('User.id'), nullable=False)
+                     ForeignKey('User.id'), nullable=False)
 
     comments = relationship("Comment", back_populates="opportunity")
     pictures = relationship("Picture", back_populates="opportunity")
@@ -26,7 +26,7 @@ class Opportunity(Entity, Base):
     liked_by = relationship("OpportunityLike", back_populates="opportunity")
 
     def __init__(self, name, user_id, description="",
-        latitude=None, longitude=None, score=0, closing_date=None):
+                 latitude=None, longitude=None, score=0, closing_date=None):
         super().__init__(user_id)
         self.name = name
         self.description = description
@@ -45,7 +45,12 @@ class Opportunity(Entity, Base):
             'longitude': self.longitude,
             'score': self.score,
             'closing_date': self.closing_date,
-            'user': self.user_id
+            'user_id': self.user_id,
+            'user_name': self.created_by.name,
+            'pictures': [picture.to_dict() for picture in self.pictures],
+            'tags': [oppotag.tag.to_dict() for oppotag in self.tags],
+            'comments': [comment.to_dict() for comment in self.comments],
+            'schedule': [schedule.to_dict() for schedule in self.schedules],
         }
 
 
@@ -80,4 +85,3 @@ class OpportunityRepository:
             oppo = session.query(Opportunity).get(like.opportunity_id)
             liked.append(oppo)
         return liked
-
