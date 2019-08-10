@@ -38,3 +38,21 @@ class TagRepository:
             tags.append(tag)
 
         return tags
+
+    @staticmethod
+    def add_to_user(tag, user_id):
+        user_tag = userTag.UserTag(user_id, tag.id)
+        user_tag.persist()
+
+    @staticmethod
+    def remove_from_user(user_id):
+        session.query(userTag.UserTag).filter_by(user_id=user_id).delete()
+
+    @staticmethod
+    def get_by_name(name):
+        lc_name = str(name).strip().lower()
+        return session.query(Tag).filter(Tag.name.ilike(lc_name)).first()
+
+    @staticmethod
+    def persist(tag):
+        return tag.persist()
