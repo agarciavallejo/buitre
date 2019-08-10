@@ -1,6 +1,6 @@
 from flask import g, jsonify, Blueprint, request
 
-from ..api import authenticate_user, GetProfileService, UpdateProfileService
+from ..api import authenticate_user, GetProfileService, UpdateProfileService, UpdateUserTagsService
 
 profile_api = Blueprint('profile_api', __name__)
 
@@ -18,7 +18,6 @@ def get_profile():
 
 @profile_api.route('/<int:id>', methods=['GET'])
 def get_public_profile(id):
-
     response = GetProfileService.call({'user_id': id})
 
     # remove private information
@@ -35,7 +34,6 @@ def get_public_profile(id):
 @profile_api.route('/update', methods=["POST"])
 @authenticate_user
 def update_profile():
-
     user_id = g.user_id
 
     args = {
@@ -53,6 +51,18 @@ def update_profile():
     if request.form.get('profile_picture'):
         args['profile_picture'] = request.form.get('profile_picture')
 
-    UpdateProfileService.call({args})
+    UpdateProfileService.call(args)
+
+    return jsonify({'message': "OK"}), 200
+
+
+@profile_api.route('/update/tags', methods=["POST"])
+@authenticate_user
+def update_tags():
+    user_id = g.user_id
+
+    tags = request.form.get('tags').split(",")
+
+    UpdateUserTagsService.call({'user_id': user_id, 'tags': tags})
 
     return jsonify({'message': "OK"}), 200

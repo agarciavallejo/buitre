@@ -11,6 +11,7 @@ from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
 from ..services.profile.getProfileService import GetProfileService
 from ..services.profile.updateProfileService import UpdateProfileService
+from ..services.profile.updateUserTagsService import UpdateUserTagsService
 
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
@@ -65,6 +66,9 @@ GetProfileService = GetProfileService(
 )
 UpdateProfileService = UpdateProfileService(
     user_repository=UserRepository
+)
+UpdateUserTagsService = UpdateUserTagsService(
+    tag_repository=TagRepository
 )
 
 
