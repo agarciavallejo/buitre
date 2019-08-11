@@ -20,10 +20,13 @@ class CreateOpportunityService:
             raise ArgumentException('latitude parameter is mandatory')
         if 'longitude' not in args or not args['longitude']:
             raise ArgumentException('longitude parameter is mandatory')
+        if 'address' not in args or not args['address']:
+            raise ArgumentException('address parameter is mandatory')
 
         user_id = args['user_id']
         name = args['name']
         pictures = args['pictures']
+        address = args['address']
         latitude = args['latitude']
         longitude = args['longitude']
 
@@ -32,12 +35,20 @@ class CreateOpportunityService:
         schedules = args['schedules'] if 'schedules' in args else None
         tags = args['tags'] if 'tags' in args else None
 
-        opportunity = self.opportunityFactory.create(user_id, name, description, latitude, longitude, closing_date)
+        opportunity = self.opportunityFactory.create(
+            user_id,
+            name,
+            description,
+            address,
+            latitude,
+            longitude,
+            closing_date
+        )
         opportunity = self.opportunityRepository.persist(opportunity)
 
         for path in pictures:
             picture = self.pictureFactory.create_for_opportunity(opportunity.id, path, user_id)
             self.pictureRepository.persist(picture)
-            
+
 
         return opportunity
