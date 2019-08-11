@@ -17,6 +17,7 @@ class Opportunity(Entity, Base):
     closing_date = Column("closing_date", Date)
     user_id = Column("user_id", Integer,
                      ForeignKey('User.id'), nullable=False)
+    address = Column('address', String)
 
     comments = relationship("Comment", back_populates="opportunity")
     pictures = relationship("Picture", back_populates="opportunity")
@@ -26,7 +27,7 @@ class Opportunity(Entity, Base):
     liked_by = relationship("OpportunityLike", back_populates="opportunity")
 
     def __init__(self, name, user_id, description="",
-                 latitude=None, longitude=None, score=0, closing_date=None):
+                 latitude=None, longitude=None, score=0, closing_date=None, address=None):
         super().__init__(user_id)
         self.name = name
         self.description = description
@@ -35,12 +36,14 @@ class Opportunity(Entity, Base):
         self.score = score
         self.closing_date = closing_date
         self.user_id = user_id
+        self.address = address
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'description': self.description,
+            'address': self.address,
             'latitude': self.latitude,
             'longitude': self.longitude,
             'score': self.score,
@@ -58,6 +61,7 @@ class OpportunitySchema(Schema):
     id = fields.Integer()
     name = fields.Str()
     description = fields.Str()
+    address = fields.Str()
     latitude = fields.Decimal()
     longitude = fields.Decimal()
     score = fields.Decimal()
