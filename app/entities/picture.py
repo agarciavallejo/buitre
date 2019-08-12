@@ -37,3 +37,8 @@ class PictureRepository:
     def get_by_opportunity_id(opportunity_id):
         pictures = session.query(Picture).filter_by(opportunity_id=opportunity_id).all()
         return pictures
+
+    @staticmethod
+    def add_to_opportunity(path, opportunity):
+        picture = Picture(opportunity.id, path, opportunity.user_id)
+        picture.persist()
