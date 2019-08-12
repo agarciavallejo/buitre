@@ -35,6 +35,7 @@ class CreateUserService:
         if self.userRepository.get_by_email(email) is not None:
             raise EmailInUseException()
 
+        # TODO: move password hashing and validation token generation to factory?
         hashed_password = self.hash_password(raw_password)
         user = self.userFactory.create(name, email, hashed_password)
         validation_token = self.generate_validation_token(email)

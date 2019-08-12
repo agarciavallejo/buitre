@@ -25,6 +25,18 @@ class Comment(Entity, Base):
         self.opportunity_id = opportunity_id
         self.user_id = user_id
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'text': self.text,
+            'user_id': self.user_id,
+            'user_name': self.created_by.name,
+            'created_at': self.created_at,
+            'opportunity_id': self.opportunity_id,
+            'opportunity_name': self.opportunity.name,
+            'score': self.score
+        }
+
 
 class CommentSchema(Schema):
     id = fields.Integer()

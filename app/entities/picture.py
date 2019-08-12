@@ -8,7 +8,7 @@ class Picture(Entity, Base):
     __tablename__ = 'Picture'
 
     opportunity_id = Column("opportunity_id", Integer,
-         ForeignKey('Opportunity.id'), nullable=False)
+                            ForeignKey('Opportunity.id'), nullable=False)
     path = Column("path", String)
 
     opportunity = relationship("Opportunity", back_populates="pictures")
@@ -17,6 +17,12 @@ class Picture(Entity, Base):
         super().__init__(created_by)
         self.opportunity_id = opportunity_id
         self.path = path
+
+    def to_dict(self):
+        return {
+            'opportunity_id': self.opportunity_id,
+            'path': self.path
+        }
 
 
 class PictureSchema:
@@ -31,3 +37,8 @@ class PictureRepository:
     def get_by_opportunity_id(opportunity_id):
         pictures = session.query(Picture).filter_by(opportunity_id=opportunity_id).all()
         return pictures
+
+    @staticmethod
+    def add_to_opportunity(path, opportunity):
+        picture = Picture(opportunity.id, path, opportunity.user_id)
+        picture.persist()

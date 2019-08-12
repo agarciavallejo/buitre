@@ -17,12 +17,12 @@ class OpportunitySchedule(Entity, Base):
     saturday = Column("saturday", Boolean)
     sunday = Column("sunday", Boolean)
     opportunity_id = Column("opportunity_id", Integer,
-        ForeignKey('Opportunity.id'), nullable=False)
-    
+                            ForeignKey('Opportunity.id'), nullable=False)
+
     opportunity = relationship("Opportunity", back_populates="schedules")
 
     def __init__(self, user_id, opportunity_id, start_time, end_time,
-        mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
+                 mo=True, tu=True, we=True, th=True, fr=True, sa=True, su=True):
         Entity.__init__(self, user_id)
         self.start_time = start_time
         self.end_time = end_time
@@ -34,6 +34,19 @@ class OpportunitySchedule(Entity, Base):
         self.saturday = sa
         self.sunday = su
         self.opportunity_id = opportunity_id
+
+    def to_dict(self):
+        return {
+            'start_time': str(self.start_time),
+            'end_time': str(self.end_time),
+            'monday': self.monday,
+            'tuesday': self.tuesday,
+            'wednesday': self.wednesday,
+            'thursday': self.thursday,
+            'friday': self.friday,
+            'saturday': self.saturday,
+            'sunday': self.sunday,
+        }
 
 
 class OpportunityScheduleSchema(Schema):

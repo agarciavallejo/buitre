@@ -8,6 +8,7 @@ from .utils.customEncoder import CustomEncoder
 from .ql import qlschema, GraphQLView
 from .api.user_api import user_api
 from .api.profile_api import profile_api
+from .api.opportunity_api import opportunity_api
 
 app.debug = True
 
@@ -16,6 +17,7 @@ c = Controller(session)
 app.json_encoder = CustomEncoder
 app.register_blueprint(user_api, url_prefix='/api/user')
 app.register_blueprint(profile_api, url_prefix='/api/profile')
+app.register_blueprint(opportunity_api, url_prefix='/api/opportunity')
 
 # create test user
 initial_users = session.query(User).all()
@@ -35,49 +37,6 @@ def get_users():
     users = user_schema.dump(users_object)
     session.close()
     return jsonify(users)
-
-
-@app.route("/opportunity")
-def list_opportunities():
-    db_oppos = session.query(Opportunity).all()
-    o_sch = OpportunitySchema(many=True)
-    opportunities = o_sch.dump(db_oppos)
-    session.close()
-    return jsonify(opportunities)
-
-
-# route params test
-@app.route("/opportunity/create/<user_id>")
-def create_opo(user_id):
-    user = c.getUser(user_id)
-    if (user):
-        c.createOpportunity("Oportunitat2", user_id)
-        return "DONE"
-    else:
-        return "USER NOT FOUND"
-
-
-@app.route("/opportunity/<id>/picture/add")
-def create_opportunity_picture(id):
-    opportunity = c.getOpportunity(id)
-    if (opportunity):
-        path = "path/to/a/file.png"
-        c.createOpportunityPicture(id, path)
-        return "DONE"
-    else:
-        return "NOT DONE"
-
-
-# query string params test
-@app.route("/opportunity/find")
-def create_opportunity():
-    q = request.args
-    return jsonify(q)
-
-
-@app.route('/opportunity/<id>/addtag/<tag_id>')
-def add_tag_to_opportunity(id, tag_id):
-    c.opportunityAddTag(int(id), int(tag_id))
 
 
 @app.route('/tag')

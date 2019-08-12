@@ -16,7 +16,8 @@ class Opportunity(Entity, Base):
     score = Column("score", Numeric)
     closing_date = Column("closing_date", Date)
     user_id = Column("user_id", Integer,
-        ForeignKey('User.id'), nullable=False)
+                     ForeignKey('User.id'), nullable=False)
+    address = Column('address', String)
 
     comments = relationship("Comment", back_populates="opportunity")
     pictures = relationship("Picture", back_populates="opportunity")
@@ -26,7 +27,7 @@ class Opportunity(Entity, Base):
     liked_by = relationship("OpportunityLike", back_populates="opportunity")
 
     def __init__(self, name, user_id, description="",
-        latitude=None, longitude=None, score=0, closing_date=None):
+                 latitude=None, longitude=None, score=0, closing_date=None, address=None):
         super().__init__(user_id)
         self.name = name
         self.description = description
@@ -35,12 +36,32 @@ class Opportunity(Entity, Base):
         self.score = score
         self.closing_date = closing_date
         self.user_id = user_id
+        self.address = address
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'address': self.address,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'score': self.score,
+            'closing_date': self.closing_date,
+            'user_id': self.user_id,
+            'user_name': self.created_by.name,
+            'pictures': [picture.to_dict() for picture in self.pictures],
+            'tags': [oppotag.tag.to_dict() for oppotag in self.tags],
+            'comments': [comment.to_dict() for comment in self.comments],
+            'schedule': [schedule.to_dict() for schedule in self.schedules],
+        }
 
 
 class OpportunitySchema(Schema):
     id = fields.Integer()
     name = fields.Str()
     description = fields.Str()
+    address = fields.Str()
     latitude = fields.Decimal()
     longitude = fields.Decimal()
     score = fields.Decimal()
@@ -68,3 +89,22 @@ class OpportunityRepository:
             oppo = session.query(Opportunity).get(like.opportunity_id)
             liked.append(oppo)
         return liked
+
+    @staticmethod
+    def persist(opportunity):
+        return opportunity.persist()
+
+
+class OpportunityFactory:
+    @staticmethod
+    def create(user_id, name, description, address, latitude, longitude, closing_date):
+        oppo = Opportunity(
+            name=name,
+            user_id=user_id,
+            description=description,
+            address=address,
+            latitude=latitude,
+            longitude=longitude,
+            closing_date=closing_date,
+        )
+        return oppo

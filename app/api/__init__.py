@@ -2,6 +2,12 @@ import functools
 from flask import request, g, jsonify
 
 from ..utils.exceptions import ExpiredTokenException, InvalidTokenException
+
+from ..services.opportunity.getOpportunityService import GetOpportunityService
+from ..services.opportunity.createOpportunityService import CreateOpportunityService
+from ..services.profile.getProfileService import GetProfileService
+from ..services.profile.updateProfileService import UpdateProfileService
+from ..services.profile.updateUserTagsService import UpdateUserTagsService
 from ..services.user.authenticateUserService import AuthenticateUserService
 from ..services.user.createUserService import CreateUserService
 from ..services.user.validateUserService import ValidateUserService
@@ -9,15 +15,12 @@ from ..services.user.loginUserService import LoginUserService
 from ..services.user.getUserService import GetUserService
 from ..services.user.sendUserRecoveryService import SendUserRecoveryService
 from ..services.user.recoverUserService import RecoverUserService
-from ..services.profile.getProfileService import GetProfileService
-from ..services.profile.updateProfileService import UpdateProfileService
-from ..services.profile.updateUserTagsService import UpdateUserTagsService
 
 from ..utils.tokenManager import TokenManager
 from ..utils.email import EmailFactory, EmailSender
 from ..entities.user import UserRepository, UserFactory
 from ..entities.comment import CommentRepository
-from ..entities.opportunity import OpportunityRepository
+from ..entities.opportunity import OpportunityRepository, OpportunityFactory
 from ..entities.picture import PictureRepository
 from ..entities.tag import TagRepository
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -68,6 +71,15 @@ UpdateProfileService = UpdateProfileService(
     user_repository=UserRepository
 )
 UpdateUserTagsService = UpdateUserTagsService(
+    tag_repository=TagRepository
+)
+GetOpportunityService = GetOpportunityService(
+    opportunity_repository=OpportunityRepository
+)
+CreateOpportunityService = CreateOpportunityService(
+    opportunity_repository=OpportunityRepository,
+    opportunity_factory=OpportunityFactory,
+    picture_repository=PictureRepository,
     tag_repository=TagRepository
 )
 

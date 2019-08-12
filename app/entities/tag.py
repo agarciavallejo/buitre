@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from . import userTag
+from . import userTag, opportunityTag
 from .entity import Entity, Base, session
 from marshmallow import Schema, fields
 
@@ -19,6 +19,12 @@ class Tag(Entity, Base):
         super().__init__("script")
         self.name = name
         self.tag_id = tag_id
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
 
 
 class TagSchema(Schema):
@@ -43,6 +49,11 @@ class TagRepository:
     def add_to_user(tag, user_id):
         user_tag = userTag.UserTag(user_id, tag.id)
         user_tag.persist()
+
+    @staticmethod
+    def add_to_opportunity(tag, opportunity_id):
+        opportunity_tag = opportunityTag.OpportunityTag(opportunity_id, tag.id)
+        opportunity_tag.persist()
 
     @staticmethod
     def remove_from_user(user_id):
