@@ -1,13 +1,14 @@
+from ...entities.tag import Tag
 from ...utils.exceptions import ArgumentException
 
 
 class CreateOpportunityService:
 
-    def __init__(self, opportunity_factory, opportunity_repository, picture_factory, picture_repository):
+    def __init__(self, opportunity_factory, opportunity_repository, picture_repository, tag_repository):
         self.opportunityFactory = opportunity_factory
         self.opportunityRepository = opportunity_repository
-        self.pictureFactory = picture_factory
         self.pictureRepository = picture_repository
+        self.tagRepository = tag_repository
 
     def call(self, args):
         if 'user_id' not in args or args['user_id'] is None:
@@ -47,8 +48,13 @@ class CreateOpportunityService:
         opportunity = self.opportunityRepository.persist(opportunity)
 
         for path in pictures:
-            picture = self.pictureFactory.create_for_opportunity(opportunity.id, path, user_id)
-            self.pictureRepository.persist(picture)
+            self.pictureRepository.add_to_opportunity(path, opportunity)
 
+        for tag_name in tags:
+            tag = self.tagRepository.get_by_name(tag_name)
+            if tag is None:
+                tag = Tag(tag_name)
+                tag = self.tagRepository.persist(tag)
+            self.tagRepository.add_to_opportunity(tag, opportunity.id)
 
         return opportunity
