@@ -116,8 +116,8 @@ def upgrade():
         sa.Column('created_at', sa.DateTime),
         sa.Column('updated_at', sa.DateTime),
         sa.Column('last_updated_by', sa.String(16)),
-        sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False, primary_key=True),
-        sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False, primary_key=True)
+        sa.Column("opportunity_id", sa.Integer, sa.ForeignKey('Opportunity.id'), nullable=False),
+        sa.Column("tag_id", sa.Integer, sa.ForeignKey('Tag.id'), nullable=False)
     )
 
     op.create_table(
