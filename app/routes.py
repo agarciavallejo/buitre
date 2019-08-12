@@ -39,49 +39,6 @@ def get_users():
     return jsonify(users)
 
 
-@app.route("/opportunity")
-def list_opportunities():
-    db_oppos = session.query(Opportunity).all()
-    o_sch = OpportunitySchema(many=True)
-    opportunities = o_sch.dump(db_oppos)
-    session.close()
-    return jsonify(opportunities)
-
-
-# route params test
-@app.route("/opportunity/create/<user_id>")
-def create_opo(user_id):
-    user = c.getUser(user_id)
-    if (user):
-        c.createOpportunity("Oportunitat2", user_id)
-        return "DONE"
-    else:
-        return "USER NOT FOUND"
-
-
-@app.route("/opportunity/<id>/picture/add")
-def create_opportunity_picture(id):
-    opportunity = c.getOpportunity(id)
-    if (opportunity):
-        path = "path/to/a/file.png"
-        c.createOpportunityPicture(id, path)
-        return "DONE"
-    else:
-        return "NOT DONE"
-
-
-# query string params test
-@app.route("/opportunity/find")
-def create_opportunity():
-    q = request.args
-    return jsonify(q)
-
-
-@app.route('/opportunity/<id>/addtag/<tag_id>')
-def add_tag_to_opportunity(id, tag_id):
-    c.opportunityAddTag(int(id), int(tag_id))
-
-
 @app.route('/tag')
 def list_tags():
     return jsonify(c.getTags())
