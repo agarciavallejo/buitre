@@ -89,3 +89,22 @@ class OpportunityRepository:
             oppo = session.query(Opportunity).get(like.opportunity_id)
             liked.append(oppo)
         return liked
+
+    @staticmethod
+    def persist(opportunity):
+        return opportunity.persist()
+
+
+class OpportunityFactory:
+    @staticmethod
+    def create(user_id, name, description, address, latitude, longitude, closing_date):
+        oppo = Opportunity(
+            name=name,
+            user_id=user_id,
+            description=description,
+            address=address,
+            latitude=latitude,
+            longitude=longitude,
+            closing_date=closing_date,
+        )
+        return oppo
