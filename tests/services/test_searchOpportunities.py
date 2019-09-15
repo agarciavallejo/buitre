@@ -1,5 +1,6 @@
 import pytest
 
+from ...app.utils.exceptions import ArgumentException
 from ...app.services.opportunity.searchOpportunitiesService import SearchOpportunitiesService
 
 
@@ -9,4 +10,5 @@ def service():
 
 
 def test_arguments(service):
-    pass
+    with pytest.raises(ArgumentException):
+        service()
