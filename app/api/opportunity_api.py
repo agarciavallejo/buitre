@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, g
 
-from ..api import GetOpportunityService, CreateOpportunityService, authenticate_user
+from ..api import GetOpportunityService, CreateOpportunityService, authenticate_user, get_request
 from ..utils.exceptions import OpportunityNotFoundException
 
 opportunity_api = Blueprint('opportunity_api', __name__)
@@ -25,19 +25,20 @@ def get_opportunity(opportunity_id):
 @opportunity_api.route('/create', methods=['POST'])
 @authenticate_user
 def create_opportunity():
+    rq = get_request(request)
     response = {}
     response_code = 200
 
-    tags = request.form.get('tags').split(',')
-    pictures = request.form.get('pictures').split(',')
+    tags = rq.get('tags').split(',')
+    pictures = rq.get('pictures').split(',')
 
     args = {
         'user_id': g.user_id,
-        'name': request.form.get('name'),
-        'description': request.form.get('description'),
-        'address': request.form.get('address'),
-        'latitude': request.form.get('latitude'),
-        'longitude': request.form.get('longitude'),
+        'name': rq.get('name'),
+        'description': rq.get('description'),
+        'address': rq.get('address'),
+        'latitude': rq.get('latitude'),
+        'longitude': rq.get('longitude'),
         'pictures': pictures,
         'tags': tags
     }
