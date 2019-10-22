@@ -72,14 +72,14 @@ class FakeOpportunityRepo:
 @pytest.fixture()
 def fakedservice():
     return ListOpportunitiesService(
-        opportunityRepository=FakeOpportunityRepo()
+        opportunity_repository=FakeOpportunityRepo()
     )
 
 
 @pytest.fixture()
 def service():
     return ListOpportunitiesService(
-        opportunityRepository=OpportunityRepository()
+        opportunity_repository=OpportunityRepository()
     )
 
 

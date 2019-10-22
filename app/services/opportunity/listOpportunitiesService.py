@@ -3,39 +3,23 @@ from ...utils.exceptions import ArgumentException
 
 class ListOpportunitiesService:
 
-    def __init__(self, opportunityRepository):
-        self.opportunityRepository = opportunityRepository
-        self.mandatory_params = ['lat', 'lng', 'keywords', 'filters']
+    def __init__(self, opportunity_repository):
+        self.opportunity_repository = opportunity_repository
+        self.mandatory_params = ['keywords', 'page']
+        self.PAGE_SIZE = 10
 
     def call(self, args):
         for param in self.mandatory_params:
             if param not in args:
                 raise ArgumentException('missing "' + param + '" parameter')
 
-        lat = args['lat']
-        lng = args['lng']
         keywords = args['keywords']
-        filters = args['filters']
+        page = args['page']
 
-        self.opportunityRepository.initQuery()
-        if lat is not None and lng is not None:
-            self.opportunityRepository.centerQuery(lat, lng)
-
-        if keywords:
-            self.opportunityRepository.addKeyworkdsToQuery(keywords)
-
-        if len(filters):
-            for filter, value in filters:
-                self.opportunityRepository.addFilterToQuery(filter, value)
-
-        db_opportunities = self.opportunityRepository.executeQuery()
+        db_opportunities = self.opportunity_repository.execute_query(keywords, self.PAGE_SIZE, page)
 
         results = []
         for db_opportunity in db_opportunities:
-            opportunity = {
-                'id': db_opportunity.id,
-                'name': db_opportunity.name,
-            }
-            results.append(opportunity)
+            results.append(db_opportunity.to_dict())
 
         return results
