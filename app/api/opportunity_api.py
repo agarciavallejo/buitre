@@ -73,7 +73,8 @@ def search_opportunities():
             'id': db_opportunity['id'],
             'name': db_opportunity['name'],
             'distance': "5km",
-            'picture': db_opportunity['main_picture']
+            'picture': db_opportunity['main_picture'],
+            'score': db_opportunity['score']
         }
         opportunities.append(opportunity)
     response['opportunities'] = opportunities
