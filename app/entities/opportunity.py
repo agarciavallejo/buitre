@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
+from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date, or_
 from sqlalchemy.orm import relationship
 
 from .opportunityLike import OpportunityLike
@@ -50,6 +50,7 @@ class Opportunity(Entity, Base):
             'closing_date': self.closing_date,
             'user_id': self.user_id,
             'user_name': self.created_by.name,
+            'main_picture': [picture.to_dict() for picture in self.pictures][0] if self.pictures else None,
             'pictures': [picture.to_dict() for picture in self.pictures],
             'tags': [oppotag.tag.to_dict() for oppotag in self.tags],
             'comments': [comment.to_dict() for comment in self.comments],
@@ -93,6 +94,15 @@ class OpportunityRepository:
     @staticmethod
     def persist(opportunity):
         return opportunity.persist()
+
+    @staticmethod
+    def execute_query(keyword, page_size, page):
+        opportunities = session.query(Opportunity) \
+            .filter(or_(
+                Opportunity.name.like("%" + keyword + "%"),
+                Opportunity.description.like("%" + keyword + "%"))) \
+            .limit(page_size).offset(page - 1).all()
+        return opportunities
 
 
 class OpportunityFactory:

@@ -5,6 +5,7 @@ from ..utils.exceptions import ExpiredTokenException, InvalidTokenException
 
 from ..services.opportunity.getOpportunityService import GetOpportunityService
 from ..services.opportunity.createOpportunityService import CreateOpportunityService
+from ..services.opportunity.listOpportunitiesService import ListOpportunitiesService
 from ..services.profile.getProfileService import GetProfileService
 from ..services.profile.updateProfileService import UpdateProfileService
 from ..services.profile.updateUserTagsService import UpdateUserTagsService
@@ -81,6 +82,9 @@ CreateOpportunityService = CreateOpportunityService(
     opportunity_factory=OpportunityFactory,
     picture_repository=PictureRepository,
     tag_repository=TagRepository
+)
+ListOpportunitiesService = ListOpportunitiesService(
+    opportunity_repository=OpportunityRepository
 )
 
 
