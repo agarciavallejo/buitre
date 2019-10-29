@@ -110,3 +110,11 @@ def authenticate_user(f):
         return f(*args, **kwargs)
 
     return authentication_decorator
+
+
+def get_request(request):
+    if request.is_json:
+        rq = request.json
+    else:
+        rq = request.form
+    return rq

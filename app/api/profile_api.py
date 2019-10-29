@@ -1,6 +1,6 @@
 from flask import g, jsonify, Blueprint, request
 
-from ..api import authenticate_user, GetProfileService, UpdateProfileService, UpdateUserTagsService
+from ..api import authenticate_user, GetProfileService, UpdateProfileService, UpdateUserTagsService, get_request
 
 profile_api = Blueprint('profile_api', __name__)
 
@@ -34,22 +34,23 @@ def get_public_profile(id):
 @profile_api.route('/update', methods=["POST"])
 @authenticate_user
 def update_profile():
+    rq = get_request(request)
     user_id = g.user_id
 
     args = {
         'user_id': user_id
     }
 
-    if request.form.get('name'):
-        args['name'] = request.form.get('name')
-    if request.form.get('latitude'):
-        args['latitude'] = request.form.get('latitude')
-    if request.form.get('longitude'):
-        args['longitude'] = request.form.get('longitude')
-    if request.form.get('radius'):
-        args['radius'] = request.form.get('radius')
-    if request.form.get('profile_picture'):
-        args['profile_picture'] = request.form.get('profile_picture')
+    if rq.get('name'):
+        args['name'] = rq.get('name')
+    if rq.get('latitude'):
+        args['latitude'] = rq.get('latitude')
+    if rq.get('longitude'):
+        args['longitude'] = rq.get('longitude')
+    if rq.get('radius'):
+        args['radius'] = rq.get('radius')
+    if rq.get('profile_picture'):
+        args['profile_picture'] = rq.get('profile_picture')
 
     UpdateProfileService.call(args)
 
@@ -59,9 +60,10 @@ def update_profile():
 @profile_api.route('/update/tags', methods=["POST"])
 @authenticate_user
 def update_tags():
+    rq = get_request(request)
     user_id = g.user_id
 
-    tags = request.form.get('tags').split(",")
+    tags = rq.get('tags').split(",")
 
     UpdateUserTagsService.call({'user_id': user_id, 'tags': tags})
 

@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify, g
 from datetime import datetime, timedelta
 
 from ..api import authenticate_user, CreateUserService, ValidateUserService, LoginUserService, GetUserService, \
-    SendUserRecoveryService, RecoverUserService
+    SendUserRecoveryService, RecoverUserService, get_request
 from ..routes import app
 from ..entities.user import UserRepository
 from ..utils.exceptions import \
@@ -18,11 +18,12 @@ user_api = Blueprint('user_api', __name__)
 
 @user_api.route('/create', methods=['POST'])
 def create_user():
+    rq = get_request(request)
     response_code = 200
     result = {}
-    name = request.form.get('name')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    name = rq.get('name')
+    email = rq.get('email')
+    password = rq.get('password')
 
     try:
         CreateUserService.call({
@@ -58,10 +59,12 @@ def validate_user():
 
 @user_api.route('/login', methods=['POST'])
 def login_user():
+    rq = get_request(request)
     response_code = 200
     response = {}
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = rq.get('email')
+    password = rq.get('password')
+
 
     try:
         token = LoginUserService.call({
@@ -108,9 +111,10 @@ def get_user():
 
 @user_api.route('/send_recovery', methods=['POST'])
 def send_user_recovery():
+    rq = get_request(request)
     response = {}
     response_code = 200
-    email = request.form.get('email')
+    email = rq.get('email')
 
     try:
         SendUserRecoveryService.call({
